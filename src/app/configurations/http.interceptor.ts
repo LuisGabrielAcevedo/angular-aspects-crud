@@ -4,14 +4,17 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor() {}
+    url: string;
+    constructor() {
+        this.url = 'https://api-crud-test.herokuapp.com';
+    }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const headersConfig ={
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         }
-        
-        const _req = req.clone({setHeaders: headersConfig});
+        let _req = req.clone({setHeaders: headersConfig}); 
+        _req = _req.clone({url: `${this.url}/${req.url}`});
         return next.handle(_req);
     }
 }
