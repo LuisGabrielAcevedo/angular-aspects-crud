@@ -1,0 +1,11 @@
+<div class="form-container">
+  <div *ngFor="let field of fields">
+    <app-select-field [data]="{
+      field: field,
+      group: form
+    }"></app-select-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button color="primary" (click)="submit()">save</button>
+  </div>
+</div>

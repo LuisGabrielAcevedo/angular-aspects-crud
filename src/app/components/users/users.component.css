@@ -1,0 +1,9 @@
+table {
+    width: 100%;
+    margin: 20px 10px;
+}
+
+.table-container {
+    min-width: 700px;
+    overflow-y: scroll;
+}

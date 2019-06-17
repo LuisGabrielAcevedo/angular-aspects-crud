@@ -1,0 +1,10 @@
+<div [formGroup]="group" *ngIf="field.key !== 'id'">
+  <mat-form-field>
+    <input 
+      type="{{field.inputType ? field.inputType : 'text'}}" 
+      [formControlName]="field.key" 
+      matInput 
+      placeholder="{{field.placeholder ? field.placeholder : '' }}"
+    >
+  </mat-form-field>
+</div>

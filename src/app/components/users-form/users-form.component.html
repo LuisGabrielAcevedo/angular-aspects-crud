@@ -1,0 +1,4 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+    <h4>{{edit ? 'Edit' : 'Add'}}</h4>
+</div>
+<app-material-form [fields]="userConfig" (submitted)="formSubmitted($event)"></app-material-form>
