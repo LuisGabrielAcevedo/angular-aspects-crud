@@ -7,7 +7,7 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-  aspects;
+  aspects = [];
   data = [];
   displayedColumns: string[] = [];
   loading = true;
@@ -21,7 +21,7 @@ export class IndexComponent implements OnInit {
 
   async loadAspects() {
     this.loading = true;
-    this.aspects = await this.userService.builder().aspects();
+    this.aspects = await this.userService.builder().indexAspects();
     this.aspects.forEach(element => {
       this.displayedColumns.push(element.accessor);
     });

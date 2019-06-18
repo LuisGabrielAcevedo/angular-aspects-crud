@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BaseService } from './base';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends BaseService {
-  getAll(): Observable<any> {
+  constructor(http: HttpClient) {
+    super(http);
     this.url = 'users';
-    return this.get();
   }
+  
+  getAll = (): Observable<any> => this.get();
 }

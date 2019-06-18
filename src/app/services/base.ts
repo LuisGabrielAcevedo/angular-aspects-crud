@@ -1,39 +1,21 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Builder } from './builder';
 
-interface BaseInterface {
+export abstract class BaseService {
   url: string;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export abstract class BaseService implements BaseInterface {
-  url;
   constructor(
     private http: HttpClient
   ) {}
 
-  get(): Observable<any> {
-    return this.http.get(this.url);
-  }
+  get = (): Observable<object> => this.http.get(this.url);
+
+  getAspectsFromAPI = (): Observable<object> => this.http.get(this.url + '/aspects');
+  
+  builderClass = () => Builder;
 
   builder() {
     const builderClass = this.builderClass();
-    // const builderInstance = new builderClass(this);
-    // builderInstance.buildAspects();
-    // return builderInstance;
     return new builderClass(this);
-  }
-
-  builderClass() {
-    return Builder;
-  }
-
-  getAspectsFromAPI() : Observable<any>{
-    this.url = 'users';
-    return this.http.get(`${this.url}/aspects`);
   }
 }

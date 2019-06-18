@@ -1,57 +1,57 @@
-import { Injectable } from '@angular/core';
 import { Aspect } from './aspect';
 import { Observable } from 'rxjs';
+import { AspectInterface } from 'src/app/interfaces/aspect';
+import { AspectsResponseInterface } from '../interfaces/aspects-response';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class Builder {
   model_class;
-  aspects_table = [];
-  search_fields = [];
+  aspects_table: Aspect[] = [];
+  search_fields: string[] = [];
   constructor(model_class) {
     this.model_class = model_class;
   }
 
-  buildAspects(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getAspects().subscribe(
-        resp => {
-          this.search_fields = resp.search_fields;
-          resp.aspects.forEach(aspect => {
-            const aspectInstance = this.getAspectFor(aspect);
-            this.aspects_table.push(aspectInstance);
-          });
-          resolve(this.aspects_table);
-        }
-      );
-    })
+  public aspects = async (): Promise<Aspect[]> => this.aspects_table.length
+    ? this.aspects_table
+    : await this.buildAspects();
+
+  public async indexAspects(): Promise<Aspect[]> {
+    const aspects_table = await this.aspects();
+    return aspects_table.filter(aspect => aspect.isVisible());
   }
 
-  getAspects(): Observable<any> {
-    return this.model_class.getAspectsFromAPI();
+  public async formAspects(): Promise<Aspect[]> {
+    const aspects_table = await this.aspects();
+    return aspects_table.filter(aspect => aspect.isEditable());
   }
 
-  aspects() {
-    return this.buildAspects();
+  public async importableAspects(): Promise<Aspect[]> {
+    const aspects_table = await this.aspects();
+    return aspects_table.filter(aspect => aspect.isImportable());
   }
 
-  getAspectFor(aspect: any) {
-    return new Aspect(
+  private getAspects = (): Observable<AspectsResponseInterface> => this.model_class.getAspectsFromAPI();
+
+  private buildAspects(): Promise<Aspect[]> {
+    return new Promise((resolve) => {
+      this.getAspects().subscribe(resp => {
+        this.search_fields = resp.search_fields;
+        resp.aspects.forEach(aspect => {
+          const aspectInstance = this.getAspectFor(aspect);
+          this.aspects_table.push(aspectInstance);
+        });
+        resolve(this.aspects_table);
+      });
+    });
+  }
+
+  private getAspectFor = (aspect: AspectInterface): Aspect =>
+    new Aspect(
       aspect.name,
       aspect.accessor,
       aspect.type,
-      aspect.default,
+      aspect.default_value,
       aspect.nullable,
       aspect.options
     );
-  }
-
-  indexAspects() {
-    this.buildAspects().then(resp => {
-      return resp.filter(aspect => {
-        aspect.isVisible();
-      })
-    })
-  }
 }
