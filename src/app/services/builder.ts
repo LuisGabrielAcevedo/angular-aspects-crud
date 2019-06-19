@@ -35,17 +35,15 @@ export class Builder {
   private buildAspects(): Promise<Aspect[]> {
     return new Promise((resolve) => {
       this.getAspects().subscribe(resp => {
-        this.search_fields = resp.search_fields;
-        resp.aspects.forEach(aspect => {
-          const aspectInstance = this.getAspectFor(aspect);
-          this.aspects_table.push(aspectInstance);
-        });
+        resp.aspects.forEach(aspect => this.aspects_table.push(this.getAspectFromApiObject(aspect)));
+        this.setSearch(resp.search_fields);
+        this.customizeAspects();
         resolve(this.aspects_table);
       });
     });
   }
 
-  private getAspectFor = (aspect: AspectInterface): Aspect =>
+  private getAspectFromApiObject = (aspect: AspectInterface): Aspect =>
     new Aspect(
       aspect.name,
       aspect.accessor,
@@ -54,4 +52,13 @@ export class Builder {
       aspect.nullable,
       aspect.options
     );
+
+  // This is the #customize_aspects hook for customization
+  public customizeAspects(){
+    // Do nothing for now
+  }
+
+  public setSearch(args){
+    this.search_fields = args;
+  }
 }

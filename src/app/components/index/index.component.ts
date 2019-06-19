@@ -22,9 +22,7 @@ export class IndexComponent implements OnInit {
   async loadAspects() {
     this.loading = true;
     this.aspects = await this.userService.builder().indexAspects();
-    this.aspects.forEach(element => {
-      this.displayedColumns.push(element.accessor);
-    });
+    this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
     this.loadData();
   }
 

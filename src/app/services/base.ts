@@ -18,4 +18,9 @@ export abstract class BaseService {
     const builderClass = this.builderClass();
     return new builderClass(this);
   }
+  
+  aspects(){
+    this.builder().aspects();
+  }
+
 }
