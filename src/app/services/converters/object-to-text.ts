@@ -2,11 +2,11 @@ export class ObjectToText {
 
     null_string: String;
 
-    constructor(options: any[]) {
+    constructor(options: any) {
         this.applyOptions(options);
     }
 
-    private applyOptions(options: any[]) {
+    private applyOptions(options: any) {
         this.null_string = options.null_string || '';
     }
 
