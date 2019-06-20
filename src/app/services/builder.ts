@@ -13,7 +13,7 @@ export class Builder {
 
   public aspects = async (): Promise<Aspect[]> => this.aspects_table.length
     ? this.aspects_table
-    : await this.buildAspects();
+    : await this.buildAspects()
 
   public async indexAspects(): Promise<Aspect[]> {
     const aspects_table = await this.aspects();
