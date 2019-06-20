@@ -1,4 +1,12 @@
 import { Base } from './form-control/base';
+import {Generic} from './form-control/generic';
+import {Number} from './form-control/number';
+import {DateTimePicker} from './form-control/date-time-picker';
+import {DatePicker} from './form-control/date-picker';
+import {TimePicker} from './form-control/time-picker';
+import {Unit} from './form-control/unit';
+import {Enum} from './form-control/enum';
+import {Association} from './form-control/association';
 
 export class Aspect {
     name: string;
@@ -9,7 +17,7 @@ export class Aspect {
     options: {
         [key: string]: any;
     };
-    form_control: Base; 
+    form_control: Base;
     constructor(name: string, accessor: string, type: string, default_value: string, nullable: boolean, options?: { [key: string]: any; }) {
         this.name = name;
         this.accessor = accessor;
@@ -31,7 +39,7 @@ export class Aspect {
     isImportable = () => this.options.importable;
 
     private applyOptions() {
-        //this.form_control = this.newFormControl(this.options.control_type || this.type, this.options)
+        this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
     }
 
     public setOptions(args) {
@@ -48,24 +56,24 @@ export class Aspect {
     }
 
     private newFormControl(control_type, options) {
-        const klass = this.formControlTypes()[control_type] || 'FormControl::Generic';
-        this.form_control = klass.new(this, options)
+        const klass = this.formControlTypes()[control_type] || Generic;
+        return this.form_control = new klass(this, options);
     }
 
     private formControlTypes() {
         return {
-            integer: 'FormControl::Generic',
-            float: 'FormControl::Number',
-            decimal: 'FormControl::Number',
-            datetime: 'FormControl::DateTimePicker',
-            date: 'FormControl::DatePicker',
-            time: 'FormControl::TimePicker',
-            boolean: 'FormControl::Generic',
-            unit: 'FormControl::Unit',
-            enum: 'FormControl::Enum',
-            has_one: 'FormControl::Association',
-            belongs_to: 'FormControl::Association',
-            has_many: 'FormControl::Association',
+            integer: Generic,
+            float: Number,
+            decimal: Number,
+            datetime: DateTimePicker,
+            date: DatePicker,
+            time: TimePicker,
+            boolean: Generic,
+            unit: Unit,
+            enum: Enum,
+            has_one: Association,
+            belongs_to: Association,
+            has_many: Association,
         };
     }
 }
