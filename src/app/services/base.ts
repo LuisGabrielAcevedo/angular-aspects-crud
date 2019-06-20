@@ -14,13 +14,10 @@ export abstract class BaseService {
 
   builderClass = () => Builder;
 
-  builder() {
+  builder(): Promise<Builder> {
     const builderClass = this.builderClass();
-    return new builderClass(this);
-  }
-
-  aspects() {
-    this.builder().aspects();
+    const builder = new builderClass(this);
+    return builder.initializationPromise;
   }
 
 }

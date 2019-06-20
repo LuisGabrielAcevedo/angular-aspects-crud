@@ -21,7 +21,8 @@ export class IndexComponent implements OnInit {
 
   async loadAspects() {
     this.loading = true;
-    this.aspects = await this.userService.builder().indexAspects();
+    const builder = await this.userService.builder();
+    this.aspects = builder.indexAspects();
     this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
     this.loadData();
   }
@@ -30,8 +31,8 @@ export class IndexComponent implements OnInit {
     this.userService.getAll().subscribe(
       resp => {
         this.loading = false;
-        this.data = resp
+        this.data = resp;
       }
-    )
+    );
   }
 }

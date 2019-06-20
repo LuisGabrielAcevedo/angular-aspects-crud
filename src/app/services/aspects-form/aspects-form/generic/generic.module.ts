@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditComponent } from './edit.component';
+import { GenericComponent } from './generic.component';
 
 @NgModule({
-  declarations: [EditComponent],
+  declarations: [GenericComponent],
   imports: [
     CommonModule
   ]
 })
-export class EditModule { }
+export class GenericModule { }
