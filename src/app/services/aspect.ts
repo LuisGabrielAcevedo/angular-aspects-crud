@@ -7,6 +7,11 @@ import {TimePicker} from './form-control/time-picker';
 import {Unit} from './form-control/unit';
 import {Enum} from './form-control/enum';
 import {Association} from './form-control/association';
+import {IntegerToText} from './converters/integert-to-text';
+import {FloatToText} from './converters/float-to-text';
+import {DateTimeToText} from './converters/date-time-to-text';
+import {BooleanToText} from './converters/boolean-to-text';
+import {ObjectToText} from './converters/object-to-text';
 
 export class Aspect {
     name: string;
@@ -18,6 +23,7 @@ export class Aspect {
         [key: string]: any;
     };
     form_control: Base;
+    converter: ObjectToText;
     constructor(name: string, accessor: string, type: string, default_value: string, nullable: boolean, options?: { [key: string]: any; }) {
         this.name = name;
         this.accessor = accessor;
@@ -47,11 +53,19 @@ export class Aspect {
         this.applyOptions();
     }
 
-    private applyOptions = () => this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
+    private applyOptions() {
+        this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
+        this.converter = this.newConverter((this.options.control_type || this.type), this.options);
+    }
 
     private newFormControl(control_type, options) {
         const klass = this.formControlTypes()[control_type] || Generic;
         return this.form_control = new klass(this, options);
+    }
+
+    private newConverter(converter_type, options) {
+        const klass = this.converterTypes()[converter_type] || ObjectToText;
+        return this.converter = new klass(options);
     }
 
     private formControlTypes() {
@@ -68,6 +82,23 @@ export class Aspect {
             has_one: Association,
             belongs_to: Association,
             has_many: Association,
+        };
+    }
+
+    private converterTypes() {
+        return {
+            integer: IntegerToText,
+            float: FloatToText,
+            decimal: FloatToText,
+            datetime: DateTimeToText,
+            date: DateTimeToText,
+            time: DateTimeToText,
+            boolean: BooleanToText,
+            unit: ObjectToText,
+            enum: ObjectToText,
+            has_one: ObjectToText,
+            belongs_to: ObjectToText,
+            has_many: ObjectToText,
         };
     }
 }

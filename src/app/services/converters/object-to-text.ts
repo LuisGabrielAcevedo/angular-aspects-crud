@@ -6,19 +6,19 @@ export class ObjectToText {
         this.applyOptions(options);
     }
 
-    private applyOptions(options: any) {
+    public applyOptions(options: any) {
         this.null_string = options.null_string || '';
     }
 
-    displayFor(object, options: any[]) {
+    public displayFor(object, options = {}) {
         object ? this.displayValueFor(object).toString() : this.nullString(options);
     }
 
-    displayValueFor(object) {
+    public displayValueFor(object, options = {}) {
         return object;
     }
 
-    fromDisplay(text, options: any[]) {
+    public fromDisplay(text, options = {}) {
         return text;
     }
 
