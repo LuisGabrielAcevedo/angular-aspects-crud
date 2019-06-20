@@ -28,32 +28,29 @@ export class Aspect {
         this.applyOptions();
     }
 
-    label = () => this.options.label || this.name;
+    public label = () => this.options.label || this.name;
 
-    isRequired = () => this.options.required;
+    public isRequired = () => this.options.required;
 
-    isVisible = () => this.options.visible;
+    public isVisible = () => this.options.visible;
 
-    isEditable = () => this.options.editable;
+    public isEditable = () => this.options.editable;
 
-    isImportable = () => this.options.importable;
+    public isImportable = () => this.options.importable;
 
+    public fieldFor = (form, view_options) => this.form_control.fieldFor(form, view_options);
+
+    public searchFieldFor = (form, view_options) => this.form_control.searchFieldFor(form, view_options);
     private applyOptions() {
         this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
     }
 
     public setOptions(args) {
-        this.options.merge(args);
+        this.options = { ... this.options, args }
         this.applyOptions();
     }
 
-    public fieldFor(form, view_options) {
-        this.form_control.fieldFor(form, view_options);
-    }
-
-    public searchFieldFor(form, view_options) {
-        this.form_control.searchFieldFor(form, view_options);
-    }
+    private applyOptions = () => this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
 
     private newFormControl(control_type, options) {
         const klass = this.formControlTypes()[control_type] || Generic;
