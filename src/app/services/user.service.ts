@@ -11,6 +11,6 @@ export class UserService extends BaseService {
     super(http);
     this.url = 'users';
   }
-  
+
   getAll = (): Observable<any> => this.get();
 }

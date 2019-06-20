@@ -1,61 +1,76 @@
-import { Aspect } from './aspect';
-import { Observable } from 'rxjs';
-import { AspectInterface } from 'src/app/interfaces/aspect';
-import { AspectsResponseInterface } from '../interfaces/aspects-response';
+import {Aspect} from './aspect';
+import {Observable} from 'rxjs';
+import {AspectInterface} from 'src/app/interfaces/aspect';
+import {AspectsResponseInterface} from '../interfaces/aspects-response';
 
 export class Builder {
-  model_class;
-  _aspects: Aspect[] = [];
-  index_aspects: Aspect[] = [];
-  search_fields: string[] = [];
-  constructor(model_class) {
-    this.model_class = model_class;
-  }
+    initializationPromise = null;
+    model_class;
+    aspects_table: Aspect[] = [];
+    index_aspects: Aspect[] = [];
+    search_fields: string[] = [];
 
-  private getAspects = (): Observable<AspectsResponseInterface> => 
-  this.model_class.getAspectsFromAPI();
+    constructor(model_class) {
+        this.model_class = model_class;
+        this.initializationPromise = this.buildAspects();
+    }
 
-  public aspects = async (): Promise<Aspect[]> => this._aspects.length
-    ? this._aspects
-    : await this.buildAspects('aspects');
+    private getAspects = (): Observable<AspectsResponseInterface> =>
+        this.model_class.getAspectsFromAPI()
 
-  public indexAspects = async (): Promise<Aspect[]> => this.index_aspects.length
-    ? this.index_aspects
-    : await this.buildAspects('index_aspects');
+    public aspects() {
+        return this.aspects_table;
+    }
 
-  public async formAspects(): Promise<Aspect[]> {
-    const aspects_table = await this.aspects();
-    return aspects_table.filter(aspect => aspect.isEditable());
-  }
+    public indexAspects() {
+        return this.index_aspects;
+    }
 
-  public async importableAspects(): Promise<Aspect[]> {
-    const aspects_table = await this.aspects();
-    return aspects_table.filter(aspect => aspect.isImportable());
-  }
+    public formAspects() {
+        return this.aspects_table.filter(aspect => aspect.isEditable());
+    }
 
-  private buildAspects(key: string): Promise<Aspect[]> {
-    return new Promise((resolve) => {
-      this.getAspects().subscribe(resp => {
-        resp.aspects.forEach(aspect => this._aspects.push(this.getAspectFromApiObject(aspect)));
-        resp.index_aspects.forEach(aspect => this.index_aspects.push(this.getAspectFromApiObject(aspect)));
-        this.customizeAspects();
-        this.setSearch(resp.search_fields);
-        resolve(key === 'aspects' ? this._aspects : this.index_aspects);
-      });
-    });
-  }
+    public importableAspects() {
+        return this.aspects_table.filter(aspect => aspect.isImportable());
+    }
 
-  private getAspectFromApiObject = (aspect: AspectInterface): Aspect =>
-    new Aspect(
-      aspect.name,
-      aspect.accessor,
-      aspect.type,
-      aspect.default_value,
-      aspect.nullable,
-      aspect.options
-    );
+    private buildAspects() {
+        return new Promise((resolve) => {
+            this.getAspects().subscribe(resp => {
+                resp.aspects.forEach(aspect => this.aspects_table.push(this.getAspectFromApiObject(aspect)));
+                resp.index_aspects.forEach(aspect => this.index_aspects.push(this.getAspectFromApiObject(aspect)));
+                this.setSearch(resp.search_fields);
+                this.customizeAspects();
+                resolve(this);
+            });
+        });
+    }
 
-  public customizeAspects(){}
+    private getAspectFromApiObject = (aspect: AspectInterface): Aspect =>
+        this.addNewAspect(
+            aspect.name,
+            aspect.accessor,
+            aspect.type,
+            aspect.default_value,
+            aspect.nullable,
+            aspect.options
+        )
 
-  public setSearch = (args) => this.search_fields = args;
+    public addNewAspect(name: string, accessor: string, type: string, default_value: string, nullable: boolean, options: {}) {
+        return new Aspect(
+            name,
+            accessor,
+            type,
+            default_value,
+            nullable,
+            options
+        );
+    }
+
+    public customizeAspects() {
+        // Hook
+    }
+
+    public setSearch = (args) => this.search_fields = args;
+
 }
