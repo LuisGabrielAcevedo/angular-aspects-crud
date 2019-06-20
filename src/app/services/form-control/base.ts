@@ -5,7 +5,7 @@ export abstract class Base implements FormControlInterface {
     aspect: Aspect;
     options = [];
 
-    constructor(aspect, options) {
+    protected constructor(aspect, options) {
         this.aspect = aspect;
         this.options = options;
     }
@@ -28,10 +28,9 @@ export abstract class Base implements FormControlInterface {
     private mergeOptions(options: any) {
         this.options.concat(options);
         this.options.concat({'placeholder': this.aspect.label});
-        this.options.concat({'aspect': this.aspect});
     }
 
-    private renderHiddenFieldFor(form, options){
+    public renderHiddenFieldFor(form, options){
         // render a hidden field
     }
 
