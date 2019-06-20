@@ -34,7 +34,7 @@ export class Aspect {
 
     public isVisible = () => this.options.visible;
 
-    public isEditable = () => this.options.editable;
+    public isEditable = () => this.options.visible && this.options.editable;
 
     public isImportable = () => this.options.importable;
 

@@ -5,20 +5,23 @@ import { AspectsResponseInterface } from '../interfaces/aspects-response';
 
 export class Builder {
   model_class;
-  aspects_table: Aspect[] = [];
+  _aspects: Aspect[] = [];
+  index_aspects: Aspect[] = [];
   search_fields: string[] = [];
   constructor(model_class) {
     this.model_class = model_class;
   }
 
-  public aspects = async (): Promise<Aspect[]> => this.aspects_table.length
-    ? this.aspects_table
-    : await this.buildAspects()
+  private getAspects = (): Observable<AspectsResponseInterface> => 
+  this.model_class.getAspectsFromAPI();
 
-  public async indexAspects(): Promise<Aspect[]> {
-    const aspects_table = await this.aspects();
-    return aspects_table.filter(aspect => aspect.isVisible());
-  }
+  public aspects = async (): Promise<Aspect[]> => this._aspects.length
+    ? this._aspects
+    : await this.buildAspects('aspects');
+
+  public indexAspects = async (): Promise<Aspect[]> => this.index_aspects.length
+    ? this.index_aspects
+    : await this.buildAspects('index_aspects');
 
   public async formAspects(): Promise<Aspect[]> {
     const aspects_table = await this.aspects();
@@ -30,15 +33,14 @@ export class Builder {
     return aspects_table.filter(aspect => aspect.isImportable());
   }
 
-  private getAspects = (): Observable<AspectsResponseInterface> => this.model_class.getAspectsFromAPI();
-
-  private buildAspects(): Promise<Aspect[]> {
+  private buildAspects(key: string): Promise<Aspect[]> {
     return new Promise((resolve) => {
       this.getAspects().subscribe(resp => {
-        resp.aspects.forEach(aspect => this.aspects_table.push(this.getAspectFromApiObject(aspect)));
-        this.setSearch(resp.search_fields);
+        resp.aspects.forEach(aspect => this._aspects.push(this.getAspectFromApiObject(aspect)));
+        resp.index_aspects.forEach(aspect => this.index_aspects.push(this.getAspectFromApiObject(aspect)));
         this.customizeAspects();
-        resolve(this.aspects_table);
+        this.setSearch(resp.search_fields);
+        resolve(key === 'aspects' ? this._aspects : this.index_aspects);
       });
     });
   }
@@ -53,12 +55,7 @@ export class Builder {
       aspect.options
     );
 
-  // This is the #customize_aspects hook for customization
-  public customizeAspects(){
-    // Do nothing for now
-  }
+  public customizeAspects(){}
 
-  public setSearch(args){
-    this.search_fields = args;
-  }
+  public setSearch = (args) => this.search_fields = args;
 }
