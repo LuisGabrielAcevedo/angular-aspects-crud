@@ -14,7 +14,7 @@ export abstract class BaseService {
 
   builderClass = () => Builder;
 
-  builder() {
+  builder(): Promise<Builder> {
     const builderClass = this.builderClass();
     const builder = new builderClass(this);
     return builder.initializationPromise;

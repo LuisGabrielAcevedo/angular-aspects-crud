@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EditComponent } from './edit.component';
+import { DatePickerComponent } from './date-picker.component';
 
 @NgModule({
-  declarations: [EditComponent],
+  declarations: [DatePickerComponent],
   imports: [
     CommonModule
   ]
 })
-export class EditModule { }
+export class DatePickerModule { }

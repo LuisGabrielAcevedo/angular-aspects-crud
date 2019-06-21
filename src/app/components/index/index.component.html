@@ -6,7 +6,7 @@
   <p>Loading ...</p>
 </div>
 
-<div fxLayout="row" fxLayoutAlign="center center" class="table-container" *ngIf="!loading">
+<div fxLayout="row" fxLayoutAlign="center center" class="table-container">
   <table mat-table [dataSource]="data" class="mat-elevation-z8">
     <ng-container matColumnDef="{{aspect.accessor}}" *ngFor="let aspect of aspects">
       <th mat-header-cell *matHeaderCellDef>{{aspect.label()}}</th>

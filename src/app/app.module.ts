@@ -10,11 +10,13 @@ import { TokenInterceptor } from './configurations/http.interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BootstrapFormModule } from 'src/app/components/shared-components/bootstrap-form/bootstrap-form.module';
 import { MaterialFormModule } from 'src/app/components/shared-components/material-form/material-form.module';
+import { IndexModule } from './components/index/index.module';
+import { NewModule } from './components/new/new.module';
+import { EditModule } from './components/edit/edit.module';
 // Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { IndexModule } from './components/index/index.module';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { IndexModule } from './components/index/index.module';
     HttpClientModule,
     FlexLayoutModule,
     IndexModule,
+    NewModule,
+    EditModule,
     // Material
     MatTableModule,
     MatIconModule,

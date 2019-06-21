@@ -1,17 +1,17 @@
 import { Base } from './form-control/base';
-import {Generic} from './form-control/generic';
-import {Number} from './form-control/number';
-import {DateTimePicker} from './form-control/date-time-picker';
-import {DatePicker} from './form-control/date-picker';
-import {TimePicker} from './form-control/time-picker';
-import {Unit} from './form-control/unit';
-import {Enum} from './form-control/enum';
-import {Association} from './form-control/association';
-import {IntegerToText} from './converters/integert-to-text';
-import {FloatToText} from './converters/float-to-text';
-import {DateTimeToText} from './converters/date-time-to-text';
-import {BooleanToText} from './converters/boolean-to-text';
-import {ObjectToText} from './converters/object-to-text';
+import { Generic } from './form-control/generic';
+import { Number } from './form-control/number';
+import { DateTimePicker } from './form-control/date-time-picker';
+import { DatePicker } from './form-control/date-picker';
+import { TimePicker } from './form-control/time-picker';
+import { Unit } from './form-control/unit';
+import { Enum } from './form-control/enum';
+import { Association } from './form-control/association';
+import { IntegerToText } from './converters/integert-to-text';
+import { FloatToText } from './converters/float-to-text';
+import { DateTimeToText } from './converters/date-time-to-text';
+import { BooleanToText } from './converters/boolean-to-text';
+import { ObjectToText } from './converters/object-to-text';
 
 export class Aspect {
     name: string;
