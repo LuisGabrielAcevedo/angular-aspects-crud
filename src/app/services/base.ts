@@ -8,7 +8,13 @@ export abstract class BaseService {
     private http: HttpClient
   ) {}
 
-  get = (): Observable<object> => this.http.get(this.url);
+  getAllAction = (): Observable<object> => this.http.get(this.url);
+
+  getAction = (id: number): Observable<object> => this.http.get(this.url + `/${id}`);
+
+  postAction = (data: any): Observable<any> => this.http.post(this.url, data);
+
+  putAction = (data: any): Observable<any> => this.http.put(this.url + `/${data.id}`, data);
 
   getAspectsFromAPI = (): Observable<object> => this.http.get(this.url + '/aspects');
 

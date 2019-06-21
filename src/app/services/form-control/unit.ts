@@ -6,4 +6,7 @@ export class Unit extends Base{
 
     renderSearchFieldFor(form, options) {
     }
+
+    public getComponent() {
+    }
 }

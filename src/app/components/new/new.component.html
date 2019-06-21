@@ -1,1 +1,5 @@
-<app-aspects-form [aspects]="form_aspects" *ngIf="form_aspects.length"></app-aspects-form>
+<div fxLayout="row" fxLayoutAlign="center center">
+    <h2>{{title}}</h2>
+</div>
+
+<app-aspects-form [aspects]="form_aspects" (submitted)="save($event)" [model]="model" *ngIf="form_aspects.length"></app-aspects-form>

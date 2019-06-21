@@ -10,9 +10,17 @@ import { CheckboxModule } from './checkbox/checkbox.module';
 import { DatePickerModule } from './date-picker/date-picker.module';
 import { GenericModule } from './generic/generic.module';
 import { NumberModule } from './number/number.module';
+import { MatButtonModule } from '@angular/material/button';
+import { SelectAspectComponent } from './select-aspect-component/select-aspect-component.component';
+import { AspectsFormDirective } from './select-aspect-component/select-aspect-component.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  declarations: [AspectsFormComponent],
+  declarations: [
+    AspectsFormComponent,
+    SelectAspectComponent,
+    AspectsFormDirective
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -20,7 +28,9 @@ import { NumberModule } from './number/number.module';
     CheckboxModule,
     DatePickerModule,
     GenericModule,
-    NumberModule
+    NumberModule,
+    FlexLayoutModule,
+    MatButtonModule
   ],
   exports: [AspectsFormComponent],
   entryComponents: [

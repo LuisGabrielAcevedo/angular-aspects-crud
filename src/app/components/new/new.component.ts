@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { ResourceService } from '../../services/resource.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -9,18 +10,34 @@ import { UserService } from '../../services/user.service';
 export class NewComponent implements OnInit {
   form_aspects = [];
   loading = true;
+  model: any;
+  title: string = '';
+  resource: string;
   constructor(
-    private userService: UserService
-  ) { }
+    private resourceService: ResourceService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { 
+    this.route.paramMap.subscribe(params => {
+      this.resource = params.get("resource");
+      this.title = this.resource;
+      this.resourceService.setUrl(this.resource);
+      const model = this.resourceService.getModel();
+      this.model = new model();
+    });
+  }
 
   ngOnInit() {
     this.loadAspects();
   }
 
-  async loadAspects() {
-    this.loading = true;
-    const builder = await this.userService.builder();
-    this.form_aspects = builder.formAspects();
+  save(model: any) {
+    this.resourceService.post(model).subscribe(() => this.router.navigate([this.resource]));
   }
 
+  async loadAspects() {
+    this.loading = true;
+    const builder = await this.resourceService.builder();
+    this.form_aspects = builder.formAspects();
+  }
 }

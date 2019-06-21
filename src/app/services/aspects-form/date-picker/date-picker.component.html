@@ -1,0 +1,10 @@
+<div [formGroup]="group">
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" [formControlName]="aspect.accessor" placeholder="{{aspect.label()}}">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <span class="error" *ngIf="validationsControl()">
+    {{aspect.label()}} is required
+  </span>
+</div>

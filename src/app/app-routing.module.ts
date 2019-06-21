@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IndexComponent } from './components/index/index.component';
 import { NewComponent } from './components/new/new.component';
 import { EditComponent } from './components/edit/edit.component';
+import { QueryParamsGuard } from './guards/query-params.guard';
 
 const routes: Routes = [
   {
@@ -11,16 +12,19 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'users',
-    component: IndexComponent
+    path: ':resource',
+    component: IndexComponent,
+    canActivate: [QueryParamsGuard]
   },
   {
-    path: 'users/new',
-    component: NewComponent
+    path: ':resource/new',
+    component: NewComponent,
+    canActivate: [QueryParamsGuard]
   },
   {
-    path: 'users/:id',
-    component: EditComponent
+    path: ':resource/:id',
+    component: EditComponent,
+    canActivate: [QueryParamsGuard]
   },
   { path: '**', redirectTo: 'users' }
 ];

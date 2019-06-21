@@ -12,7 +12,6 @@ export abstract class Base implements FormControlInterface {
 
     fieldFor(form: any, options: any) {
         this.mergeOptions(options);
-
         if (this.options.includes('hidden')) {
             this.renderHiddenFieldFor(form, options);
         } else {
@@ -30,12 +29,11 @@ export abstract class Base implements FormControlInterface {
         this.options.concat({'placeholder': this.aspect.label});
     }
 
-    public renderHiddenFieldFor(form, options){
-        // render a hidden field
-    }
+    public renderHiddenFieldFor(form, options){}
 
     abstract renderFieldFor(form, options);
     abstract renderSearchFieldFor(form, options);
+    abstract getComponent();
 }
 
 

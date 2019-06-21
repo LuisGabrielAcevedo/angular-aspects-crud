@@ -7,7 +7,6 @@ export class Builder {
     initializationPromise = null;
     model_class;
     aspects_table: Aspect[] = [];
-    index_aspects: Aspect[] = [];
     search_fields: string[] = [];
 
     constructor(model_class) {
@@ -23,7 +22,7 @@ export class Builder {
     }
 
     public indexAspects() {
-        return this.index_aspects;
+        return this.aspects_table.filter(aspect => aspect.isIndexAspect());
     }
 
     public formAspects() {
@@ -38,7 +37,6 @@ export class Builder {
         return new Promise((resolve) => {
             this.getAspects().subscribe(resp => {
                 resp.aspects.forEach(aspect => this.aspects_table.push(this.getAspectFromApiObject(aspect)));
-                resp.index_aspects.forEach(aspect => this.index_aspects.push(this.getAspectFromApiObject(aspect)));
                 this.setSearch(resp.search_fields);
                 this.customizeAspects();
                 resolve(this);

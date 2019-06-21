@@ -6,4 +6,7 @@ export class Number extends Base {
 
     renderSearchFieldFor(form, options) {
     }
+
+    public getComponent() {
+    }
 }

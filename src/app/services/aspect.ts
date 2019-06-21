@@ -42,9 +42,13 @@ export class Aspect {
 
     public isEditable = () => this.options.visible && this.options.editable;
 
+    public isIndexAspect = () => this.options.visible && this.options.index;
+
     public isImportable = () => this.options.importable;
 
     public fieldFor = (form, view_options) => this.form_control.fieldFor(form, view_options);
+
+    public getComponent = () => this.form_control.getComponent();
 
     public searchFieldFor = (form, view_options) => this.form_control.searchFieldFor(form, view_options);
 

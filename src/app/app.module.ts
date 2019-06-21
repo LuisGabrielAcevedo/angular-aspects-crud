@@ -17,6 +17,7 @@ import { EditModule } from './components/edit/edit.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ResourceService } from 'src/app/services/resource.service';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   ],
   providers: [
     UserService,
+    ResourceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

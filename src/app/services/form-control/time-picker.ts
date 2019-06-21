@@ -6,4 +6,7 @@ export class TimePicker extends Base{
 
     renderSearchFieldFor(form, options) {
     }
+
+    public getComponent() {
+    }
 }

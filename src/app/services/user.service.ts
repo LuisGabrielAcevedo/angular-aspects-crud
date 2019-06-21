@@ -12,5 +12,7 @@ export class UserService extends BaseService {
     this.url = 'users';
   }
 
-  getAll = (): Observable<any> => this.get();
+  getAll = (): Observable<any> => this.getAllAction();
+
+  get = (id: number): Observable<any> => this.getAction(id);
 }

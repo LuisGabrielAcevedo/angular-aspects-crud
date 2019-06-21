@@ -16,6 +16,7 @@ export interface Options {
     enum: boolean;
     label: string;
     has_unit: boolean;
+    index: boolean;
     unit_group?: any;
     unit_label?: any;
 }

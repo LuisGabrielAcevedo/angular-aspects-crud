@@ -6,4 +6,7 @@ export class Association extends Base{
 
     renderSearchFieldFor(form, options) {
     }
+
+    public getComponent() {
+    }
 }
