@@ -53,7 +53,7 @@ export class Aspect {
     public searchFieldFor = (form, view_options) => this.form_control.searchFieldFor(form, view_options);
 
     public setOptions(args) {
-        this.options.concat(args);
+        this.options = Object.assign(this.options, args);
         this.applyOptions();
     }
 
