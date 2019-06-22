@@ -57,6 +57,14 @@ export class Aspect {
         this.applyOptions();
     }
 
+    public displayFor(object, options = {}) {
+        return this.converter.displayFor(this.valueFor(object), options);
+    }
+
+    public valueFor(object) {
+        return object[this.accessor];
+    }
+
     private applyOptions() {
         this.form_control = this.newFormControl((this.options.control_type || this.type), this.options);
         this.converter = this.newConverter((this.options.control_type || this.type), this.options);

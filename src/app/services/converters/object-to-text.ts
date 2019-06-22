@@ -11,7 +11,7 @@ export class ObjectToText {
     }
 
     public displayFor(object, options = {}) {
-        object ? this.displayValueFor(object).toString() : this.nullString(options);
+        return object ? this.displayValueFor(object).toString() : this.nullString(options);
     }
 
     public displayValueFor(object, options = {}) {
