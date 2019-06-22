@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService } from 'src/app/services/resource.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-edit',
@@ -13,36 +13,34 @@ export class EditComponent implements OnInit {
   loading = true;
   model: any;
   title: string = '';
-  resource: string;
+  resource: string = '';
+  id: number = null;
   constructor(
     private resourceService: ResourceService,
+    public loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.route.paramMap.subscribe(params => {
       this.resource = params.get("resource");
-      const id : string = params.get("id");
+      this.id = +params.get("id");
       this.title = this.resource;
       this.resourceService.setUrl(this.resource);
-      this.loadModel(+id);
+      this.loadModel();
     });
   }
 
   ngOnInit() {
   }
 
-  loadModel(id: number) {
-    this.resourceService.get(id).subscribe(
+  loadModel() {
+    this.resourceService.get(this.id).subscribe(
       resp => {
         const model = this.resourceService.getModel();
         this.model = new model(resp);
-        this.loadAspects(); 
+        this.loadAspects();
       }
     )
-  }
-
-  save(model: any) {
-    this.resourceService.put(model).subscribe(() => this.router.navigate([this.resource]));
   }
 
   async loadAspects() {
@@ -51,4 +49,11 @@ export class EditComponent implements OnInit {
     this.form_aspects = builder.formAspects();
   }
 
+  save(model: any) {
+    this.loadingService.on();
+    this.resourceService.put(model).subscribe(() => {
+      this.router.navigate([this.resource, this.id]);
+      this.loadingService.off();
+    });
+  }
 }

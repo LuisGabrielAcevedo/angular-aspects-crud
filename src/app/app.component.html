@@ -1,1 +1,27 @@
-<router-outlet></router-outlet>
+<div class="app">
+    <mat-toolbar fxLayout="row" class="toolbar-container" fxLayoutAlign="start center" color="primary">
+        <button type="button" mat-button (click)="sidebar.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>Marihuana</span>
+    </mat-toolbar>
+    <mat-drawer-container class="drawer-container" autosize>
+        <mat-progress-bar mode="indeterminate" *ngIf="loadingService.loading"></mat-progress-bar>
+        <mat-drawer #drawer class="drawer-content" mode="side">
+            <div 
+                style="outline: 0;"
+                class="drawer-item"
+                *ngFor="let item of drawerContent" 
+                routerLink="{{item.route}}" 
+                routerLinkActive="active-route" 
+                [routerLinkActiveOptions]="{exact:true}"
+                fxLayout="row" 
+                (click)="sidebar.toggle()"
+                fxLayoutAlign="start center">
+                <mat-icon fontSet="fa" fontIcon="{{item.icon}}"></mat-icon>
+                <p>{{item.label}}</p>
+            </div>
+        </mat-drawer>
+        <router-outlet></router-outlet>
+    </mat-drawer-container>
+</div>

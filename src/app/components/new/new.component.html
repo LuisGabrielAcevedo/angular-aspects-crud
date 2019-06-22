@@ -1,5 +1,9 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-    <h2>{{title}}</h2>
+<div class="index-table" style="margin: 20px 10px;">
+    <div class="index-table-header" fxLayout="row" fxLayoutAlign="space-between center">
+        <h4>New</h4>
+    </div>
+    <div *ngIf="!form_aspects.length" fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+    <app-aspects-form [aspects]="form_aspects" (submitted)="save($event)" [model]="model" *ngIf="form_aspects.length"></app-aspects-form>
 </div>
-
-<app-aspects-form [aspects]="form_aspects" (submitted)="save($event)" [model]="model" *ngIf="form_aspects.length"></app-aspects-form>

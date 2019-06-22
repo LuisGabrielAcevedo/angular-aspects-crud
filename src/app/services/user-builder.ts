@@ -6,5 +6,4 @@ export class UserBuilder extends Builder {
         super.customizeAspects();
         this.aspectOptions(['created_at', 'updated_at'], {format: 'long'});
     }
-
 }

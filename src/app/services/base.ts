@@ -16,6 +16,8 @@ export abstract class BaseService {
 
   putAction = (data: any): Observable<any> => this.http.put(this.url + `/${data.id}`, data);
 
+  deleteAction = (id: number): Observable<any> => this.http.delete(this.url + `/${id}`);
+
   getAspectsFromAPI = (): Observable<object> => this.http.get(this.url + '/aspects');
 
   builderClass = () => Builder;

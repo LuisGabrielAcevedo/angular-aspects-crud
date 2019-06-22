@@ -1,0 +1,29 @@
+<div fxLayout="row" fxLayoutAlign="center start" fxLayout.lt-sm="column" style="margin: 20px 10px;">
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" style="width: 100%;">
+    <div class="index-table">
+      <div class="index-table-header" fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button color="primary" (click)="goToEdit()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button mat-raised-button (click)="goToIndex()">
+            <mat-icon>keyboard_backspace</mat-icon>
+            <span>Back to index</span>
+          </button>
+          <button mat-raised-button color="warn" (click)="preDelete()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" style="width: 100%;">
+    <div class="index-table">
+      <div class="index-table-header" fxLayoutAlign="space-between center">
+        <h4>Documents</h4>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { ResourceService } from '../../services/resource.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
+import { Builder } from '../../services/builder';
+import { Aspect } from '../../services/aspect';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -9,29 +11,39 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
-  aspects = [];
-  data = [];
-  displayedColumns: string[] = [];
-  loading = true;
+  aspects: Aspect[] = [];
+  data: object[] = [];
+  displayedColumns: string[];
+  loading: boolean = true;
   title: string = '';
+  resource: string = '';
   constructor(
     private resourceService: ResourceService,
-    private route: ActivatedRoute
+    private router: Router
   ) {
-    this.route.paramMap.subscribe(params => {
-      const resource: string = params.get("resource");
-      this.title = resource;
-      this.resourceService.setUrl(resource);
-    });
-   }
+
+    this.router.events
+    .pipe(
+      filter( (event: ActivationEnd) => event instanceof ActivationEnd)
+    )
+    .subscribe(resp => {
+      const resource = resp.snapshot.params['resource'];
+      if (this.resource !== resource) {
+        this.displayedColumns = [];
+        this.resource = resource;
+        this.title = this.resource;
+        this.resourceService.setUrl(this.resource);
+        this.loadAspects();
+      }
+    })
+  }
 
   ngOnInit() {
-    this.loadAspects();
   }
 
   async loadAspects() {
-    this.loading = true;
-    const builder = await this.resourceService.builder();
+    this.loading = true; 
+    const builder: Builder = await this.resourceService.builder();
     this.aspects = builder.indexAspects();
     this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
     this.loadData();
@@ -40,9 +52,13 @@ export class IndexComponent implements OnInit {
   loadData() {
     this.resourceService.getAll().subscribe(
       resp => {
-        this.loading = false;
         this.data = resp;
+        this.loading = false;
       }
     );
   }
+
+  goTo = (id: number) => this.router.navigate([this.resource, id]);
+
+  goToNew = (id: number) => this.router.navigate([this.resource, 'new']);
 }

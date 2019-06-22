@@ -1,9 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+button:focus {outline:0;}
+p, h4 {margin: 0px;}
+button mat-icon {margin-right: 5px;}
+mat-spinner {margin: 10px;}
 
-.title {
-    text-align: center;
+.index-table {
+    border: 1px solid rgba(0,0,0,.03);
+    box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+    margin: 5px;
+    min-height: 128px;
+}
+
+.index-table-header {
+    height: 64px;
+    padding: 0 20px;
+    background: rgba(0,0,0,.03);
 }

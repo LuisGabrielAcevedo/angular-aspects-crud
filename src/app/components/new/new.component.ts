@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '../../services/resource.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-new',
@@ -15,9 +16,10 @@ export class NewComponent implements OnInit {
   resource: string;
   constructor(
     private resourceService: ResourceService,
+    public loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router
-  ) { 
+  ) {
     this.route.paramMap.subscribe(params => {
       this.resource = params.get("resource");
       this.title = this.resource;
@@ -32,7 +34,11 @@ export class NewComponent implements OnInit {
   }
 
   save(model: any) {
-    this.resourceService.post(model).subscribe(() => this.router.navigate([this.resource]));
+    this.loadingService.on();
+    this.resourceService.post(model).subscribe(() => {
+      this.loadingService.off();
+      this.router.navigate([this.resource])
+    });
   }
 
   async loadAspects() {

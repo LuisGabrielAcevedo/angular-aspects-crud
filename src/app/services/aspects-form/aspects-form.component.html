@@ -9,6 +9,7 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button (click)="$event.preventDefault(); cancel()">Cancel</button>
     </div>
   </form>
 </div>

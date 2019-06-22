@@ -4,6 +4,7 @@ import { IndexComponent } from './components/index/index.component';
 import { NewComponent } from './components/new/new.component';
 import { EditComponent } from './components/edit/edit.component';
 import { QueryParamsGuard } from './guards/query-params.guard';
+import { ShowComponent } from './components/show/show.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
   },
   {
     path: ':resource/:id',
+    component: ShowComponent,
+    canActivate: [QueryParamsGuard]
+  },
+  {
+    path: ':resource/:id/edit',
     component: EditComponent,
     canActivate: [QueryParamsGuard]
   },
