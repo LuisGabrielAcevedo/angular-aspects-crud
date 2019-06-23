@@ -4,7 +4,6 @@ import { BaseService } from './base';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { Country } from '../models/country';
-import {UserBuilder} from './user-builder';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +28,6 @@ export class ResourceService extends BaseService {
   put = (data: any): Observable<any> => this.putAction(data);
 
   delete = (id: number): Observable<any> => this.deleteAction(id);
-
-  builderClass = () => UserBuilder;
 
   models() {
     return {
