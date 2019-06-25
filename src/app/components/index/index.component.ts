@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 export class IndexComponent implements OnInit {
   aspects: Aspect[] = [];
   data: object[] = [];
+  search_fields : {[key: string]: Aspect} = {};
   displayedColumns: string[];
   loading: boolean = true;
   title: string = '';
@@ -41,10 +42,13 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
   async loadAspects() {
     this.loading = true; 
     const builder: Builder = await this.resourceService.builder();
     this.aspects = builder.indexAspects();
+    this.search_fields = builder.searchFields();
     this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
     this.loadData();
   }
