@@ -1,4 +1,4 @@
-export class Country {
+export default class Country {
     name: string;
     id: number;
     constructor(country?: CountryInterface) {

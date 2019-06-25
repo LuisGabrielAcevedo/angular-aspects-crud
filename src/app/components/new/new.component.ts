@@ -24,7 +24,7 @@ export class NewComponent implements OnInit {
       this.resource = params.get("resource");
       this.title = this.resource;
       this.resourceService.setUrl(this.resource);
-      const model = this.resourceService.getModel();
+      const model = this.resourceService.model();
       this.model = new model();
     });
   }

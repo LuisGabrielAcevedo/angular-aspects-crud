@@ -1,0 +1,19 @@
+<div>
+  <form [formGroup]="group">
+    <mat-form-field appearance="fill">
+      <mat-label>Search</mat-label>
+      <input type="text" formControlName="search" matInput placeholder="Search">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </form>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+  <button mat-raised-button color="primary">
+    <mat-icon>search</mat-icon>
+    <span>Search</span>
+  </button>
+  <button mat-raised-button color="warn">
+    <mat-icon>refresh</mat-icon>
+    <span>Clear</span>
+  </button>
+</div>

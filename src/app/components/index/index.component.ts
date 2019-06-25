@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 export class IndexComponent implements OnInit {
   aspects: Aspect[] = [];
   data: object[] = [];
+  search_fields : {[key: string]: Aspect} = {};
   displayedColumns: string[];
   loading: boolean = true;
   title: string = '';
@@ -45,6 +46,7 @@ export class IndexComponent implements OnInit {
     this.loading = true; 
     const builder: Builder = await this.resourceService.builder();
     this.aspects = builder.indexAspects();
+    this.search_fields = builder.searchFields();
     this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
     this.loadData();
   }
@@ -60,5 +62,5 @@ export class IndexComponent implements OnInit {
 
   goTo = (id: number) => this.router.navigate([this.resource, id]);
 
-  goToNew = (id: number) => this.router.navigate([this.resource, 'new']);
+  goToNew = () => this.router.navigate([this.resource, 'new']);
 }

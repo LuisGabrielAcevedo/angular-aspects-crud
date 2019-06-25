@@ -97,6 +97,21 @@ export class Aspect {
         };
     }
 
+    public selectOptions() {
+        return this.isAssociation() 
+        ? this.getSelectOptionsFromAssociation()
+        : [];
+    }
+
+    private getSelectOptionsFromAssociation() {
+        // this.options.association_class.getAll();
+    }
+
+    public isAssociation() {
+        const types: string[] = ['belongs_to'];
+        return types.includes(this.type);
+    }
+
     private converterTypes() {
         return {
             integer: IntegerToText,

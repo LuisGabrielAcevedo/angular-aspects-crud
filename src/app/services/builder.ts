@@ -6,7 +6,7 @@ export class Builder {
     initializationPromise = null;
     model_class;
     aspects_table: {[key: string]: Aspect} = {};
-    search_fields: string[] = [];
+    search_fields: {[key: string]: Aspect} = {};
 
     constructor(model_class) {
         this.model_class = model_class;
@@ -41,7 +41,7 @@ export class Builder {
             this.getAspects().subscribe(resp => {
                 resp.aspects.forEach(aspect => this.setAspectFromApiObject(aspect));
                 this.setSearch(resp.search_fields);
-                this.customizeAspects()
+                this.customizeAspects();
                 resolve(this);
             });
         });
@@ -78,7 +78,23 @@ export class Builder {
         this.setOptions(aspects, options);
     }
 
-    public setSearch = (args) => this.search_fields = args;
+    private setSearch(args: {[key: string]: string[]}) {
+        const self = this;
+        for (const [key, conditions] of Object.entries(args)) {
+            const asp = this.aspectNamed(key);
+            conditions.forEach((cond) => {
+                if (asp) self.search_fields[asp.name + '_' + cond] = asp; 
+            });
+        }
+    }
+
+    public aspectNamed(name) {
+        return this.aspects_table[name];
+    }
+
+    public searchFields() {
+        return this.search_fields;
+    }
 
     private setOptions(aspects: any[], options: {}) {
         const self = this;

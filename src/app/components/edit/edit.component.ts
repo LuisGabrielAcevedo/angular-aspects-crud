@@ -36,7 +36,7 @@ export class EditComponent implements OnInit {
   loadModel() {
     this.resourceService.get(this.id).subscribe(
       resp => {
-        const model = this.resourceService.getModel();
+        const model = this.resourceService.model();
         this.model = new model(resp);
         this.loadAspects();
       }

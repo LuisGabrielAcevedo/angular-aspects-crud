@@ -14,6 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { SelectAspectComponent } from './select-aspect-component/select-aspect-component.component';
 import { AspectsFormDirective } from './select-aspect-component/select-aspect-component.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SelectComponent } from './select/select.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { AutocompleteModule } from './autocomplete/autocomplete.module';
+import { SelectModule } from './select/select.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CheckboxModule,
     DatePickerModule,
     GenericModule,
+    AutocompleteModule,
+    SelectModule,
     NumberModule,
     FlexLayoutModule,
     MatButtonModule
@@ -37,7 +43,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CheckboxComponent,
     DatePickerComponent,
     GenericComponent,
-    NumberComponent
+    NumberComponent,
+    SelectComponent,
+    AutocompleteComponent
   ]
 })
 export class AspectsFormModule { }
