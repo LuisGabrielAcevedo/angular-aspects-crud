@@ -12,6 +12,7 @@ import { FloatToText } from './converters/float-to-text';
 import { DateTimeToText } from './converters/date-time-to-text';
 import { BooleanToText } from './converters/boolean-to-text';
 import { ObjectToText } from './converters/object-to-text';
+declare var require: any;
 
 export class Aspect {
     name: string;
@@ -98,13 +99,14 @@ export class Aspect {
     }
 
     public selectOptions() {
-        return this.isAssociation() 
+        return this.isAssociation()
         ? this.getSelectOptionsFromAssociation()
         : [];
     }
 
     private getSelectOptionsFromAssociation() {
-        // this.options.association_class.getAll();
+        const association_class = require(`src/app/models/countries`).default;
+        return association_class
     }
 
     public isAssociation() {

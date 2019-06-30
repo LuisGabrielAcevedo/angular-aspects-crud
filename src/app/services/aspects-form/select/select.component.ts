@@ -22,6 +22,10 @@ export class SelectComponent implements OnInit {
   ngOnInit() {
     if (this.aspect.isRequired()) this.validations.push(Validators.required);
     this.group.addControl(this.aspect.accessor, this.fb.control(this.model[this.aspect.accessor]));
+    const options = this.aspect.selectOptions();
+    options.all().then(resp => {
+      this.data = resp;
+    })
   }
 
   validationsControl(){

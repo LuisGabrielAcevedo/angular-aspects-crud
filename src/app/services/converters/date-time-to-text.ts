@@ -3,7 +3,7 @@ import {isNull} from 'util';
 import * as moment from 'moment';
 
 export class DateTimeToText extends ObjectToText {
-    format: String;
+    format: string;
 
     public applyOptions(options: any) {
         super.applyOptions(options);
@@ -19,16 +19,14 @@ export class DateTimeToText extends ObjectToText {
     }
 
     private getMomentFormat() {
-        if (this.format === 'default') {
-            return 'YYYY-MM-DD HH:mm:ss';
-        }
-        if (this.format === 'long') {
-            return 'LLLL';
-        }
-        if (this.format === 'short') {
-            return 'LLL';
-        }
-        return 'YYYY-MM-DD HH:mm:ss';
+       return this.momentFormatTypes()[this.format] || 'YYYY-MM-DD HH:mm:ss';
+    }
+
+    private momentFormatTypes() {
+        return {
+            long: 'LLLL',
+            short: 'LLL'
+        };
     }
 
     public fromDisplay(text, options: {}) {
