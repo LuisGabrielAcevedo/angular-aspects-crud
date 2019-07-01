@@ -22,4 +22,5 @@ export class ResourceService extends BaseService {
   delete = (id: number): Observable<any> => this.deleteAction(id);
   builderClass = () => UserBuilder;
   model = () => require(`src/app/models/${this.url}`).default;
+  coloquentModel = () => require(`src/app/coloquen/${this.url}`).default;
 }
