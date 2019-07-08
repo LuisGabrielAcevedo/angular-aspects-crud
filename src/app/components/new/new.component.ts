@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '../../services/resource.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from 'src/app/services/loading.service';
+declare var require: any;
 
 @Component({
   selector: 'app-new',
@@ -14,6 +15,7 @@ export class NewComponent implements OnInit {
   model: any;
   title: string = '';
   resource: string;
+  modelClass: any;
   constructor(
     private resourceService: ResourceService,
     public loadingService: LoadingService,
@@ -24,8 +26,9 @@ export class NewComponent implements OnInit {
       this.resource = params.get("resource");
       this.title = this.resource;
       this.resourceService.setUrl(this.resource);
-      const model = this.resourceService.getModel();
-      this.model = new model();
+      const model_class = require(`src/app/models/${this.resource}`).default;
+      this.modelClass = new model_class();
+      this.model = this.modelClass.default_model;
     });
   }
 
@@ -35,10 +38,11 @@ export class NewComponent implements OnInit {
 
   save(model: any) {
     this.loadingService.on();
-    this.resourceService.post(model).subscribe(() => {
-      this.loadingService.off();
-      this.router.navigate([this.resource])
-    });
+    this.modelClass.create(model);
+    this.modelClass.save().then(resp => {
+        this.loadingService.off();
+        this.router.navigate([this.resource])
+    })
   }
 
   async loadAspects() {

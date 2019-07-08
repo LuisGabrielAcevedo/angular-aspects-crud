@@ -1,8 +1,11 @@
 <div fxLayout="row" fxLayoutAlign="center start" fxLayout.lt-sm="column" style="margin: 20px 10px;">
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" style="width: 100%;">
     <div class="index-table">
-      <div class="index-table-header" fxLayout="row" fxLayoutAlign="space-between center">
-        <h4>Filters</h4>
+      <div class="index-table-header" fxLayout="row" fxLayoutAlign="start center">
+        <h4>Search</h4>
+      </div>
+      <div *ngIf="!loading" class="search-content">
+        <app-search [searchFields]="search_fields"></app-search>
       </div>
     </div>
   </div>

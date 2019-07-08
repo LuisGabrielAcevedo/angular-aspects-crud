@@ -1,4 +1,5 @@
 import {Base} from './base';
+import { SelectComponent } from '../aspects-form/select/select.component';
 
 export class Association extends Base{
     renderFieldFor(form, options) {
@@ -8,5 +9,6 @@ export class Association extends Base{
     }
 
     public getComponent() {
+        return SelectComponent;
     }
 }

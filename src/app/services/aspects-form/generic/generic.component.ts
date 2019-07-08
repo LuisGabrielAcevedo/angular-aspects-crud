@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Aspect } from '../../aspect';
-import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-generic',
@@ -18,7 +18,7 @@ export class GenericComponent implements OnInit {
 
   ngOnInit() {
     if (this.aspect.isRequired()) this.validations.push(Validators.required);
-    this.group.addControl(this.aspect.accessor, this.fb.control(this.model[this.aspect.accessor], this.validations));
+    this.group.addControl(this.aspect.accessor, this.fb.control(this.model[this.aspect.accessor],this.validations));
   }
 
   validationsControl(){

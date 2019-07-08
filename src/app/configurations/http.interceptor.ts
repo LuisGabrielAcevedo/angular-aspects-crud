@@ -15,7 +15,9 @@ export class TokenInterceptor implements HttpInterceptor {
             'Accept': 'application/json',
         }
         let _req = req.clone({ setHeaders: headersConfig });
-        _req = _req.clone({ url: `${this.url}/${req.url}` });
+        if (req.url.includes('aspects')) {
+            _req = _req.clone({ url: `${this.url}/${req.url}` });
+        }
         return next.handle(_req).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) { }

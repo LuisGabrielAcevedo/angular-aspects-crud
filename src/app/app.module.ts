@@ -8,20 +8,17 @@ import { TokenInterceptor } from './configurations/http.interceptor';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BootstrapFormModule } from 'src/app/components/shared-components/bootstrap-form/bootstrap-form.module';
 import { MaterialFormModule } from 'src/app/components/shared-components/material-form/material-form.module';
-import { IndexModule } from './components/index/index.module';
-import { NewModule } from './components/new/new.module';
-import { EditModule } from './components/edit/edit.module';
+import { AppRoutingModule } from './app-routing.module';
+import { ResourceService } from 'src/app/services/resource.service';
+import { ComponentsModule } from 'src/app/components/components.module';
 // Material
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ResourceService } from 'src/app/services/resource.service';
-import { ShowModule } from './components/show/show.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -37,10 +34,6 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserAnimationsModule,
     HttpClientModule,
     FlexLayoutModule,
-    IndexModule,
-    NewModule,
-    EditModule,
-    ShowModule,
     // Material
     MatTableModule,
     MatIconModule,
@@ -49,10 +42,10 @@ import { AppRoutingModule } from './app-routing.module';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    ComponentsModule
   ],
   providers: [
-    ResourceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

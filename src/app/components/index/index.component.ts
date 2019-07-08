@@ -4,6 +4,7 @@ import { Router, ActivationEnd } from '@angular/router';
 import { Builder } from '../../services/builder';
 import { Aspect } from '../../services/aspect';
 import { filter } from 'rxjs/operators';
+declare const require: any;
 
 @Component({
   selector: 'app-index',
@@ -18,6 +19,7 @@ export class IndexComponent implements OnInit {
   loading: boolean = true;
   title: string = '';
   resource: string = '';
+  modelClass: any;
   constructor(
     private resourceService: ResourceService,
     private router: Router
@@ -30,10 +32,11 @@ export class IndexComponent implements OnInit {
     .subscribe(resp => {
       const resource = resp.snapshot.params['resource'];
       if (this.resource !== resource) {
-        this.displayedColumns = [];
         this.resource = resource;
+        this.displayedColumns = [];
         this.title = this.resource;
         this.resourceService.setUrl(this.resource);
+        this.modelClass = require(`src/app/models/${this.resource}`).default;
         this.loadAspects();
       }
     })
@@ -54,15 +57,15 @@ export class IndexComponent implements OnInit {
   }
 
   loadData() {
-    this.resourceService.getAll().subscribe(
+    this.modelClass.all().then(
       resp => {
         this.data = resp;
         this.loading = false;
       }
-    );
+    )
   }
 
   goTo = (id: number) => this.router.navigate([this.resource, id]);
 
-  goToNew = (id: number) => this.router.navigate([this.resource, 'new']);
+  goToNew = () => this.router.navigate([this.resource, 'new']);
 }

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from 'src/app/components/delete-dialog/delete-dialog.component';
 import { LoadingService } from 'src/app/services/loading.service';
+import Users from '../../models/users';
+declare var require: any;
 
 @Component({
   selector: 'app-show',
@@ -17,6 +19,7 @@ export class ShowComponent implements OnInit {
   resource: string = '';
   id: number = null;
   title: string = '';
+  modelClass: any;
   constructor(
     private resourceService: ResourceService,
     public dialog: MatDialog,
@@ -29,30 +32,28 @@ export class ShowComponent implements OnInit {
       this.id = +params.get("id");
       this.title = this.resource;
       this.resourceService.setUrl(this.resource);
-      this.loadModel();
+      this.modelClass = require(`src/app/models/${this.resource}`).default;
+      this.loadData();
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  loadModel() {
-    this.resourceService.get(this.id).subscribe(
-      resp => {
-        const model = this.resourceService.getModel();
-        this.model = new model(resp);
-        this.loadAspects();
-      }
-    )
+  loadData() {
+    this.loading = true;
+    this.modelClass.find(this.id).then(resp => {
+      this.model = resp;
+      this.loadAspects();
+    });
   }
 
   async loadAspects() {
-    this.loading = true;
     const builder = await this.resourceService.builder();
     this.aspects = builder.formAspects();
   }
 
   goToEdit = () => this.router.navigate([this.resource, this.id, 'edit']);
+
   goToIndex = () => this.router.navigate([this.resource]);
 
   preDelete() {
@@ -69,7 +70,8 @@ export class ShowComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
         this.loadingService.on();
-        this.resourceService.delete(this.id).subscribe(() => {
+        this.modelClass = new this.modelClass();
+        this.modelClass.delete(this.id).then(resp => {
           this.loadingService.off();
           this.router.navigate([this.resource]);
         });
