@@ -1,0 +1,10 @@
+<div [formGroup]="group">
+  <mat-form-field appearance="{{appearance}}">
+    <input type="text" placeholder="{{aspect.label()}}" matInput [formControlName]="key" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option._id">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

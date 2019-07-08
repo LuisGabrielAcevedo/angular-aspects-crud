@@ -1,0 +1,57 @@
+<div class="aspects-form-container" fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="20" *ngIf="leftAspectsGroup.length">
+    <div class="group-container" *ngFor="let aspect of leftAspectsGroup" fxLayout="column" fxLayoutAlign="center center">
+        <app-aspect-component [data]="{
+          aspect: aspect,
+          group: group,
+          model: model,
+          appearance: appearance
+        }"></app-aspect-component>
+    </div>
+  </div>
+  <div fxFlex>
+    <form #aspectsForm [formGroup]="group" (submit)="submit()">
+      <div *ngIf="aspectsFormatted.length === 1">
+          <div *ngFor="let row of aspectsFormatted[0].aspects" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+              <div *ngFor="let aspect of row.aspects" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="{{row.fxFlex}}" fxFlex.lg="{{row.fxFlex}}">
+                  <app-aspect-component [data]="{
+                          aspect: aspect,
+                          group: group,
+                          model: model,
+                          appearance: appearance
+                  }"></app-aspect-component>
+              </div>
+          </div>
+      </div>
+      <div *ngIf="aspectsFormatted.length > 1">
+        <mat-tab-group [selectedIndex]="index">
+          <mat-tab *ngFor="let tab of aspectsFormatted" label="{{tab.tab}}">
+            <div class="tab-container">
+              <div *ngFor="let row of tab.aspects" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                  <div *ngFor="let aspect of row.aspects" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="{{row.fxFlex}}" fxFlex.lg="{{row.fxFlex}}" fxFlex.xl="{{row.fxFlex}}">
+                      <app-aspect-component [data]="{
+                              aspect: aspect,
+                              group: group,
+                              model: model,
+                              appearance: appearance
+                      }"></app-aspect-component>
+                  </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </form>
+  </div>
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="20" fxFlex.lg="20" *ngIf="rightAspectsGroup.length">
+    <div class="group-container" *ngFor="let aspect of rightAspectsGroup" fxLayout="column" fxLayoutAlign="center center">
+      <app-aspect-component [data]="{
+        aspect: aspect,
+        group: group,
+        model: model,
+        appearance: appearance
+      }"></app-aspect-component>
+    </div>
+  </div>
+</div>
+<ng-content></ng-content>

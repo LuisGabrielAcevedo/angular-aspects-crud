@@ -1,9 +1,24 @@
 <div class="index-table" style="margin: 20px 10px;">
   <div class="index-table-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <h4>Edit</h4>
+    <h4>Edit {{title}}</h4>
   </div>
-  <div *ngIf="!form_aspects.length" fxLayout="row" fxLayoutAlign="center center">
+  <div *ngIf="isLoadingAspects" fxLayout="row" fxLayoutAlign="center center">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
-  <app-aspects-form [aspects]="form_aspects" (submitted)="save($event)" [model]="model"></app-aspects-form>
+  <app-aspects-form 
+    [columns]="columns"
+    [appearance]="'outline'"
+    [aspects]="form_aspects" 
+    (submitted)="editAction($event)" 
+    [model]="model" 
+    *ngIf="!isLoadingAspects">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" (click)="$event.preventDefault();edit()">
+        Edit
+      </button>
+      <button mat-raised-button color="warn" (click)="$event.preventDefault();cancel()">
+        Cancel
+      </button>
+    </div>
+  </app-aspects-form>
 </div>

@@ -26,8 +26,8 @@ export class MaterialFormComponent implements OnInit {
   }
 
   submit() {
-    let outObject = this.form.value;
-    if (!this.form.value.id) delete this.form.value.id;
+    const outObject = this.form.value;
+    if (!this.form.value.id) { delete this.form.value.id; }
     this.submitted.emit(outObject);
   }
 }

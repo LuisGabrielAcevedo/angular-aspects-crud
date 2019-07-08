@@ -40,7 +40,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SelectModule,
     SliderModule,
     FlexLayoutModule
-  ], 
+  ],
   exports: [
     MaterialFormComponent
   ],

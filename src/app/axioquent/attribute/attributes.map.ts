@@ -1,24 +1,18 @@
-export class AttributesMap<T>
-{
+export class AttributesMap<T> {
     protected data: {[key: string]: T};
-
-    constructor()
-    {
+    constructor() {
         this.data = {};
     }
 
-    public get(key: string): T
-    {
+    public get(key: string): T {
         return this.data[key];
     }
 
-    public set(key: string, value: T): void
-    {
+    public set(key: string, value: T): void {
         this.data[key] = value;
     }
 
-    public toArray(): {[key: string]: T}
-    {
+    public toArray(): {[key: string]: T} {
         return this.data;
     }
 }

@@ -1,8 +1,8 @@
-import { HttpClientResponse } from "../interfaces/http-client-response";
-import { AxiosPromise } from "axios";
-import { HttpClientPromise } from "../interfaces/http-client-promise";
-import { AxiosHttpClientResponse } from "../classes/axios-http-client-response";
-import { Thenable } from "../interfaces/types";
+import { HttpClientResponse } from '../interfaces/http-client-response';
+import { AxiosPromise } from 'axios';
+import { HttpClientPromise } from '../interfaces/http-client-promise';
+import { AxiosHttpClientResponse } from '../classes/axios-http-client-response';
+import { Thenable } from '../interfaces/types';
 
 export class AxiosHttpClientPromise implements HttpClientPromise {
     private axiosPromise: AxiosPromise;
@@ -15,7 +15,7 @@ export class AxiosHttpClientPromise implements HttpClientPromise {
     then<U>(onFulfilled?: (value: HttpClientResponse) => (Thenable<U> | U), onRejected?: (error: any) => void): Promise<U> {
         const wrappedOnFulfilled = onFulfilled !== undefined
             ?
-            (axiosResponse => onFulfilled(new AxiosHttpClientResponse(axiosResponse)))
+            ((axiosResponse: any) => onFulfilled(new AxiosHttpClientResponse(axiosResponse)))
             :
             undefined;
         return <Promise<U>>this.axiosPromise.then(

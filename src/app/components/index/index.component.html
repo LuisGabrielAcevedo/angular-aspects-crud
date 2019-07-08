@@ -4,15 +4,15 @@
       <div class="index-table-header" fxLayout="row" fxLayoutAlign="start center">
         <h4>Search</h4>
       </div>
-      <div *ngIf="!loading" class="search-content">
-        <app-search [searchFields]="search_fields"></app-search>
+      <div class="search-content">
+        <app-search [searchFields]="search_fields" [searchModel]="searchModel" [resource]="resource"></app-search>
       </div>
     </div>
   </div>
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" style="width: 100%;">
     <div class="index-table">
       <div class="index-table-header" fxLayout="row" fxLayoutAlign="space-between center">
-        <h4>{{title}}</h4>
+        <h4>{{title | translate}}</h4>
         <button mat-raised-button color="primary" (click)="goToNew()">
           <mat-icon>add_circle_outline</mat-icon>
           <span>New</span>
@@ -35,6 +35,15 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" style="margin: 5px;">
+        <mat-paginator 
+             [pageSize]="pagination.per_page"
+             [length]="pagination.total_count"
+             [pageSizeOptions]="[5, 10, 20, 100]"
+             (page)="pageParams($event)"
+             >
+        </mat-paginator>
       </div>
     </div>
   </div>

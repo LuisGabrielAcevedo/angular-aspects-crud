@@ -1,0 +1,16 @@
+<div [formGroup]="group">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <span class="error" *ngIf="validationsControl(group, key)">
+      * required
+    </span>
+  </div>
+  <mat-form-field appearance="{{appearance}}">
+    <mat-label>{{aspect.label()}}</mat-label>
+    <input 
+      type="text" 
+      [formControlName]="key" 
+      matInput 
+      placeholder="{{aspect.label()}}"
+    >
+  </mat-form-field>
+</div>

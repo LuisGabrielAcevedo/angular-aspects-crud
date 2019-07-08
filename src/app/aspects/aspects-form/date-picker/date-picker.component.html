@@ -1,0 +1,13 @@
+<div [formGroup]="group">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <span class="error" *ngIf="validationsControl(group, key)">
+      * required
+    </span>
+  </div>
+  <mat-form-field appearance="{{appearance}}">
+    <mat-label>{{aspect.label()}}</mat-label>
+    <input matInput [matDatepicker]="picker" [formControlName]="key" placeholder="{{aspect.label()}}">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>

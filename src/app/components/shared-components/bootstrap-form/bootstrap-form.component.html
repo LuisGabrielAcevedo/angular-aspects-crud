@@ -1,9 +1,0 @@
-<div class="form-container">
-  <div *ngFor="let field of fields">
-    <app-select-field [data]="{
-      field: field,
-      group: form
-    }"></app-select-field>
-  </div>
-  <button (click)="submit()">save</button>
-</div>

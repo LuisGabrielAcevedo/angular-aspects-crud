@@ -1,48 +1,151 @@
-import { QueryMethods } from './interfaces/query-methods';
-import { Response } from "./response/response";
+import { QueryMethods } from './query/query-methods';
 import { Model } from './model';
-import { HttpClient } from 'src/app/axioquent/axios/interfaces/http-client';
-import { Query } from './query';
+import { Query } from './query/query';
 import { FilterSpec } from './filter/filter-spec';
+import { SortDirection } from './sort/sort-directions';
+import { SortSpec } from './sort/sort-spec';
+import { Option } from './option/option';
+import { PaginationSpec } from './pagination/pagination-spec';
+import { HttpClient } from './axios/interfaces/http-client';
+import { UrlSpec } from './url/url-spec';
+import { HeaderSpec } from './header/header-spec';
+import { HttpClientResponse } from './axios/interfaces/http-client-response';
 
 export class Builder implements QueryMethods {
-    protected type: any;
+    protected modelType: typeof Model;
+    protected headers: HeaderSpec[];
     private httpClient: HttpClient;
     private query: Query;
-    private forceSingular: boolean;
 
     constructor(
-        type: typeof Model,
-        queriedRelationName?: string,
+        modelType: typeof Model,
         baseModelType?: string,
-        forceSingular: boolean = false
     ) {
-        this.type = type;
-        let modelInstance: Model = (new (<any> type)());
-        baseModelType = baseModelType
-            ? baseModelType
-            : modelInstance.getResource();
-        this.query = new Query(baseModelType, queriedRelationName);
-        this.httpClient = type.getHttpClient();
-        this.forceSingular = forceSingular;
+        this.modelType = modelType;
+        this.headers = [];
+        const modelInstance: Model = (new (<any>modelType)());
+        baseModelType = baseModelType ? baseModelType : modelInstance.getResource();
+        this.query = new Query(baseModelType);
+        this.httpClient = modelType.getHttpClient();
+        this.initPaginationSpec();
     }
 
-    public get(page: number = 0): Promise<Response> {
-        return <Promise<any>> this.getHttpClient().get(this.query.toString()).then(resp => {
-            return resp.getData();
-        })
+    public async all(page?: number, perPage?: number): Promise<any> {
+        this.setHeaders();
+        if (page) { this.query.getPaginationSpec().setPage(page); }
+        if (perPage) { this.query.getPaginationSpec().setPerPage(perPage); }
+        const resp: HttpClientResponse = await this.getHttpClient().get(this.query.toString());
+        const data: any = {
+            data: resp.getData()
+        };
+        if (resp.getPagination()) { data.pagination = resp.getPagination(); }
+        return data;
     }
 
-    public find(id: number): Promise<Response> {
-        return <Promise<any>> this.getHttpClient().get(this.query.toString(id)).then(resp => {
-            return resp.getData();
-        })
+    public async find(id: number): Promise<any> {
+        this.setHeaders();
+        const resp: HttpClientResponse = await this.getHttpClient().get(this.query.toString(id));
+        return resp.getData();
     }
 
-    public where(attribute: string, value: string): Builder
-    {
+    public where(attribute: string, value: string): Builder {
         this.query.addFilter(new FilterSpec(attribute, value));
         return this;
+    }
+
+    public andWhere(attribute: string, value: string): Builder {
+        this.query.addAndFilter(new FilterSpec(attribute, value));
+        return this;
+    }
+
+    public orWhere(attribute: string | string[], value: string, type?: string): Builder {
+        let ats = '';
+        if (typeof attribute === 'string') {
+            ats = attribute as string;
+            if (type) { ats += `_${type}`; }
+            this.query.addOrFilter(new FilterSpec(ats, value));
+        } else if (Array.isArray(attribute)) {
+            for (const a of attribute) {
+                ats += !ats ? a : `_or_${a}`;
+            }
+            if (type) { ats += `_${type}`; }
+            this.query.addOrFilter(new FilterSpec(ats, value));
+        } else {
+            throw new Error('The argument for \'with\' must be a string or an array of strings.');
+        }
+        return this;
+    }
+
+    public orderBy(attribute: string, direction?: SortDirection | string): Builder {
+        if (typeof direction === 'undefined' || !direction) {
+            direction = SortDirection.ASC;
+        } else if (typeof direction === 'string') {
+            if (direction === 'asc') {
+                direction = SortDirection.ASC;
+            } else if (direction === 'desc') {
+                direction = SortDirection.DESC;
+            } else {
+                throw new Error(
+                    'The \'direction\' parameter must be string of value \'asc\' or \'desc\', ' +
+                    'value \'' + direction + '\' invalid.'
+                );
+            }
+        }
+        this.query.addSort(
+            new SortSpec(
+                attribute,
+                direction === SortDirection.ASC
+            )
+        );
+        return this;
+    }
+
+    public with(value: string | string[]): Builder {
+        if (typeof value === 'string') {
+            this.query.addInclude(value);
+        } else if (Array.isArray(value)) {
+            for (const v of value) {
+                this.query.addInclude(v);
+            }
+        } else {
+            throw new Error('The argument for \'with\' must be a string or an array of strings.');
+        }
+        return this;
+    }
+
+    public option(queryParameter: string, value: string): Builder {
+        this.query.addOption(
+            new Option(queryParameter, value)
+        );
+        return this;
+    }
+
+    public setUrl(url: string | string[], action?: string): Builder {
+        if (typeof url === 'string') {
+            this.query.addUrl(new UrlSpec(url, action));
+        } else if (Array.isArray(url)) {
+            let urlFormatted = '';
+            for (const u of url) {
+                urlFormatted += !urlFormatted ? u : `/${u}`;
+            }
+            this.query.addUrl(new UrlSpec(urlFormatted, action));
+        }
+        return this;
+    }
+
+    public header(name: string, value: string): Builder {
+        this.headers.push(new HeaderSpec(name, value));
+        return this;
+    }
+
+    private setHeaders(): void {
+        this.headers.forEach(header => {
+            this.getHttpClient().setHeader(header.getName(), header.getValue());
+        });
+    }
+
+    private initPaginationSpec(): void {
+        this.query.setPaginationSpec(new PaginationSpec);
     }
 
     private getHttpClient(): HttpClient {

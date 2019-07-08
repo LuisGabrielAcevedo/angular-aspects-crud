@@ -1,4 +1,5 @@
 export interface HttpClientResponse {
-    getData(): any
-    getUnderlying(): any
+    getData(): any;
+    getPagination(): any;
+    getUnderlying(): any;
 }

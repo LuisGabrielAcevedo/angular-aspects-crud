@@ -13,7 +13,7 @@ export class TokenInterceptor implements HttpInterceptor {
         const headersConfig = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-        }
+        };
         let _req = req.clone({ setHeaders: headersConfig });
         if (req.url.includes('aspects')) {
             _req = _req.clone({ url: `${this.url}/${req.url}` });

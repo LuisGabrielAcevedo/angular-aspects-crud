@@ -1,9 +1,12 @@
-import { HttpClientPromise } from "./http-client-promise";
+import { HttpClientPromise } from './http-client-promise';
+import { AxiosquentHeaders } from '../../interfaces/axiosquent-headers';
 
 export interface HttpClient {
-    setBaseUrl(baseUrl: string): void
+    setBaseUrl(baseUrl: string): void;
 
-    setWithCredentials(withCredientials: boolean): void
+    setHeaders(headers?: AxiosquentHeaders): void;
+
+    setHeader(name: string, value: string): void;
 
     get(url: string): HttpClientPromise;
 

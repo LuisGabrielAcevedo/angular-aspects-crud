@@ -1,11 +1,11 @@
 import {
     Component,
-    OnInit, 
-    Input, 
-    ViewChild, 
-    ComponentFactoryResolver, 
-    OnChanges, 
-    SimpleChanges, 
+    OnInit,
+    Input,
+    ViewChild,
+    ComponentFactoryResolver,
+    OnChanges,
+    SimpleChanges,
     SimpleChange
 } from '@angular/core';
 import { FormDirective } from './select-field.directive';
@@ -34,7 +34,7 @@ export class SelectFieldComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         const cData: SimpleChange = changes.data;
-        if (cData) this.data = { ...cData.currentValue };
+        if (cData) { this.data = { ...cData.currentValue }; }
         this.loadComponent();
     }
 

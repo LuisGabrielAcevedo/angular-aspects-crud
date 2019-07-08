@@ -19,7 +19,7 @@
                 (click)="sidebar.toggle()"
                 fxLayoutAlign="start center">
                 <mat-icon fontSet="fa" fontIcon="{{item.icon}}"></mat-icon>
-                <p>{{item.label}}</p>
+                <p>{{item.label | translate}}</p>
             </div>
         </mat-drawer>
         <router-outlet></router-outlet>

@@ -11,9 +11,9 @@ export class QueryParamsGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      const resourcesAvailable: string[] = ['users','countries'];
+      const resourcesAvailable: string[] = ['users', 'countries', 'states'];
       const resource: string = next.paramMap.get('resource')!;
-      if (!resourcesAvailable.includes(resource)) this.router.navigate(['']);
+      if (!resourcesAvailable.includes(resource)) { this.router.navigate(['']); }
       return resourcesAvailable.includes(resource);
   }
 }

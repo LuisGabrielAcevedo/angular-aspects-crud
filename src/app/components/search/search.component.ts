@@ -1,5 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
+import { AspectsFormComponent } from 'src/app/aspects/aspects-form/aspects-form.component';
+import { AxiosquentModel } from 'src/app/axioquent';
 
 @Component({
   selector: 'app-search',
@@ -7,25 +10,45 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  @Input() searchFields: {[key: string]: string[]};
-  group: FormGroup;
+  @ViewChild(AspectsFormComponent) form: AspectsFormComponent;
+  @Input() searchFields: { [key: string]: any };
+  @Input() searchModel: { [key: string]: any };
+  @Input() resource: string;
+  searchValue: FormControl = new FormControl();
+  paramsFormatted: { [key: string]: string[] } = {};
   constructor(
-    private fb: FormBuilder,
-  ) {
-    this.group = this.fb.group({});
-    this.group.addControl('search', this.fb.control(''));
-  }
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    // console.log(this.searchFields);
+  }
+
+  async searchAction(model: AxiosquentModel) {
+    const searchModel = {};
+    Object.keys(model)
+    .filter(param => model[param])
+    .forEach(param => {
+      if (model[param]) {
+        searchModel[param] = model[param];
+      }
+    });
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        params: JSON.stringify({
+          ... searchModel,
+          current_page: 1,
+          per_page: 20
+        })
+      }
+    };
+    this.router.navigate([this.resource], navigationExtras);
   }
 
   search() {
-
+    this.form.submit();
   }
 
   clear() {
-    
+    this.form.reset();
   }
-
 }

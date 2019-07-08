@@ -1,0 +1,20 @@
+<div [formGroup]="group">
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <span class="error" *ngIf="validationsControl(group, key)">
+      * required
+    </span>
+  </div>
+  <mat-form-field appearance="{{appearance}}">
+    <mat-label>{{aspect.label()}}</mat-label>
+    <mat-select placeholder="{{aspect.label()}}" [formControlName]="key">
+      <mat-option *ngFor="let item of data" [value]="item">
+        {{item}}
+      </mat-option>
+      <mat-option *ngIf="!data.length">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <p>No data available</p>
+        </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

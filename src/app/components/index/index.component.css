@@ -1,6 +1,6 @@
 table {
     width: 100%;
-    margin: 20px;
+    margin: 10px;
 }
 
 .link {
@@ -17,5 +17,5 @@ mat-icon {
 }
 
 .search-content {
-    margin: 20px;
+    margin: 10px;
 }
