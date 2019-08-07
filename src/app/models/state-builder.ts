@@ -5,7 +5,7 @@ export class StateBuilder extends Builder {
     public customizeAspects() {
         this.aspectOptions(['country'], {
             association_class: Country,
-            association_key: 'id'
+            association_key: 'name'
         });
     }
 }

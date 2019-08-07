@@ -8,7 +8,7 @@ import { TimePicker } from './form-control/time-picker';
 import { Unit } from './form-control/unit';
 import { Enum } from './form-control/enum';
 import { Association } from './form-control/association';
-import { IntegerToText } from './converters/integert-to-text';
+import { IntegerToText } from './converters/integer-to-text';
 import { FloatToText } from './converters/float-to-text';
 import { DateTimeToText } from './converters/date-time-to-text';
 import { BooleanToText } from './converters/boolean-to-text';
@@ -58,6 +58,10 @@ export class Aspect implements AspectInferface {
 
     public defaultValue = (): any =>
         this.values()[this.type] ? this.values()[this.type] : null
+
+    public strongParam() {
+        return this.options.foreign_key || this.name;
+    }
 
     public setOptions(args: object): void {
         this.options = Object.assign(this.options, args);

@@ -11,5 +11,3 @@ export class IntegerToText extends ObjectToText {
     }
 
 }
-
-

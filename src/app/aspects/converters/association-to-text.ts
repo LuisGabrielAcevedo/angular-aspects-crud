@@ -1,7 +1,17 @@
-import { ObjectToText } from './object-to-text';
+import {ObjectToText} from './object-to-text';
 
 export class AssociationToText extends ObjectToText {
-    public fromDisplay(label: string, options: object) {
-        return options[label || 'name'];
+
+    association_class: string;
+    association_key: string;
+
+    public applyOptions(options: any) {
+        super.applyOptions(options);
+        this.association_class = options.association_class;
+        this.association_key = options.association_key || 'name';
+    }
+
+    public displayValueFor(object, options = {}) {
+        return object[this.association_key];
     }
 }
