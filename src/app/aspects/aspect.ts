@@ -77,14 +77,25 @@ export class Aspect implements AspectInferface {
     }
 
     public async selectOptions(): Promise<any> {
+        let options: Array<{key: string, value: any}> = []
         if (this.isAssociation()) {
             const resp = await this.options.association_class.all();
-            return resp;
+            resp.data.forEach(option => {
+                options.push({
+                    key: option['id'] || option['_id'],
+                    value: option
+                });
+            })
         }
         if (this.isEnum() && this.options.in) {
-            return this.options.in;
+            this.options.in.forEach(option => {
+                options.push({
+                    key: option,
+                    value: option
+                });
+            })
         }
-        return [];
+        return options;
     }
 
     private isEnum(): boolean {
@@ -147,7 +158,7 @@ export class Aspect implements AspectInferface {
             time: TimePicker,
             boolean: Boolean,
             unit: Unit,
-            enum: Enum,
+            enum: Association,
             has_one: Association,
             belongs_to: Association,
             has_many: Association,

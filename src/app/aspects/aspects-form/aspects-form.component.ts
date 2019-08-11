@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AspectInferface } from '../interfaces/aspect';
 import { AspectsFormModel } from '../interfaces/aspects-form-model';
 import { chunk, cloneDeep } from 'lodash';
@@ -37,10 +37,9 @@ export class AspectsFormComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const aspects: AspectInferface[] | AspectsSearch = changes.aspects ? changes.aspects.currentValue : undefined;
-    const model: AspectsFormModel = changes.model ? changes.model.currentValue : undefined;
-    if (model) { this.modelCopy = cloneDeep(model); }
-    if (aspects) { this.aspectsCopy = cloneDeep(aspects); }
-    this.initForm();
+    if (aspects) { this.aspectsCopy = cloneDeep(aspects); 
+      this.initForm();
+    }
   }
 
   initForm() {
@@ -124,12 +123,23 @@ export class AspectsFormComponent implements OnInit {
   submit(): void {
     let outObject = this.group.value;
     if (this.modelCopy) { outObject = { ... this.modelCopy, ...this.group.value }; }
-    this.group.valid ? this.submitted.emit(outObject) : this.messagesService.openSnackBar('Invalid form');
+    this.group.valid ? this.submitted.emit(outObject) : this.validateAllFormFields(this.group);
   }
 
   reset(): void {
     this.group.reset();
     this.submitted.emit(this.group.value);
   }
+
+  validateAllFormFields(formGroup: FormGroup) {         
+  Object.keys(formGroup.controls).forEach(field => {  
+    const control = formGroup.get(field);             
+    if (control instanceof FormControl) {             
+      control.markAsTouched({ onlySelf: true });
+    } else if (control instanceof FormGroup) {        
+      this.validateAllFormFields(control);            
+    }
+  });
+}
 }
 

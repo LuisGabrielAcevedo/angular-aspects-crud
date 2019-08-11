@@ -10,7 +10,7 @@ export abstract class Model {
 
     constructor() {
         this.attributes = new AttributesMap();
-        this.baseUrl = this.getBaseUrl();
+        this.base_url = this.baseUrl();
         if (!Model.httpClient) { Model.httpClient = new AxiosHttpClient(); }
         this.initHttpClient();
     }
@@ -18,7 +18,7 @@ export abstract class Model {
     public resource!: string;
     private id: number | undefined;
     private attributes: AttributesMap<any>;
-    public baseUrl!: string;
+    public base_url!: string;
 
     public static getHttpClient(): HttpClient {
         return this.httpClient;
@@ -63,8 +63,13 @@ export abstract class Model {
     public static header(name: string, value: string): Builder {
         return new Builder(this).header(name, value);
     }
-    public abstract getBaseUrl(): string;
-    public abstract getHeaders(): AxiosquentHeaders;
+
+    public static noPagination(): Builder {
+        return new Builder(this).noPagination();
+    }
+
+    public abstract baseUrl(): string;
+    public abstract headers(): AxiosquentHeaders;
 
     public getResource = (): string => this.resource;
 
@@ -76,8 +81,8 @@ export abstract class Model {
     }
 
     private initHttpClient(): void {
-        Model.httpClient.setBaseUrl(this.getBaseUrl());
-        Model.httpClient.setHeaders(this.getHeaders());
+        Model.httpClient.setBaseUrl(this.baseUrl());
+        Model.httpClient.setHeaders(this.headers());
     }
 
     public async save(): Promise<any> {

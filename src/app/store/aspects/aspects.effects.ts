@@ -29,11 +29,11 @@ export class AspectsEffects {
                 resourceInfo[loadRequest.resource] = currentAspects;
                 return [
                     new AspectsActions.SetCurrentAspectsAction(resourceInfo)
-                ]
+                ];
             } else {
                 return [
                     new AspectsActions.LoadAspectsAction(loadRequest)
-                ]
+                ];
             }
         })
     );
@@ -46,7 +46,7 @@ export class AspectsEffects {
             this.aspectsService.loadAspects(loadRequest.modelClass).pipe(
                 switchMap((response) => {
                     const resourceInfo: AspectsStoreResourceInformation = {};
-                    resourceInfo[loadRequest.resource] = {}
+                    resourceInfo[loadRequest.resource] = {};
                     resourceInfo[loadRequest.resource]['indexAspects'] = response.indexAspects();
                     resourceInfo[loadRequest.resource]['formAspects'] = response.formAspects();
                     resourceInfo[loadRequest.resource]['searchFields'] = response.searchFields();

@@ -69,7 +69,7 @@ export class IndexComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.subscriptions.push(
       this.aspectsSandbox.fetchIsLoading().subscribe(isLoadingAspects => {
-        this.isLoadingAspects = isLoadingAspects
+        this.isLoadingAspects = isLoadingAspects;
       }),
       this.aspectsSandbox.fetchCurrentAspects().subscribe(aspects => {
         if (aspects[this.resource]) {
@@ -77,9 +77,9 @@ export class IndexComponent implements OnDestroy, OnInit {
           this.search_fields = aspects[this.resource]['searchFields'];
           this.aspects.forEach(element => this.displayedColumns.push(element.accessor));
           this.searchModel ? this.searchAction() : this.setPagination(this.pagination.current_page, this.pagination.per_page);
-        } 
+        }
       })
-    )
+    );
   }
 
   pageParams(page: PageEvent) {
@@ -130,6 +130,7 @@ export class IndexComponent implements OnDestroy, OnInit {
 // ----- AXIOSQUENT OPTIONS ---------------------------------------------------- //
 
 //       this.modelClass
+//       .setUrl('new url', 'force')
 //       .header('pin_code', '123456')
 //       .where('country_id', '1')
 //       .orWhere(['name', 'profile.first_name', 'profile.last_name'], 'Luis')

@@ -48,16 +48,16 @@ export class ShowComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.aspectsSandbox.fetchIsLoading().subscribe(isLoadingAspects => {
-        this.isLoadingAspects = isLoadingAspects
+        this.isLoadingAspects = isLoadingAspects;
       }),
       this.aspectsSandbox.fetchCurrentAspects().subscribe(aspects => {
         if (aspects[this.resource]) {
           this.aspects = aspects[this.resource]['formAspects'];
           this.loadData();
-        } 
+        }
       })
-    )
-  } 
+    );
+  }
 
   async loadData() {
     this.loading = true;

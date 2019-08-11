@@ -1,4 +1,4 @@
-<div class="aspects-form-container" fxLayout="row" fxLayout.lt-sm="column">
+<div *ngIf="aspectsFormatted.length" class="aspects-form-container" fxLayout="row" fxLayout.lt-sm="column" >
   <div fxFlex="20" *ngIf="leftAspectsGroup.length">
     <div class="group-container" *ngFor="let aspect of leftAspectsGroup" fxLayout="column" fxLayoutAlign="center center">
         <app-aspect-component [data]="{

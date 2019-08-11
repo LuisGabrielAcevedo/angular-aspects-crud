@@ -36,5 +36,5 @@ export type Actions
     = SearchAspectsAction
     | SetCurrentAspectsAction
     | LoadAspectsAction
-    | LoadAspectsSuccessAction 
+    | LoadAspectsSuccessAction
     | AspectsErrorAction;

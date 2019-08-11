@@ -1,20 +1,17 @@
-import { Model } from '../../axioquent';
-import { AxiosquentHeaders } from '../../axioquent/interfaces/axiosquent-headers';
 import { Builder } from '../../aspects/builder';
-// import { Model } from "axiosquent-ts";
-// import { AxiosquentHeaders } from 'axiosquent-ts/dist/interfaces/axiosquent-headers';
+import { Model, AxiosquentHeaders } from "axiosquent-ts";
 
 export class Base extends Model {
-    public getBaseUrl(): string {
+    public baseUrl(): string {
         return 'https://api-crud-test.herokuapp.com';
     }
 
-    public getHeaders(): AxiosquentHeaders {
-        return {
-            Authorization: 'token'
-        };
+    headers(): AxiosquentHeaders {
+        const headers: AxiosquentHeaders = {};
+        headers['Authorization'] = 'token'
+        return headers;
     }
-
+    
     public builderClass(): typeof Builder {
         return Builder;
     }

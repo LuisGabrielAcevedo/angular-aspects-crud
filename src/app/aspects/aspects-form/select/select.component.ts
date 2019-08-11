@@ -24,10 +24,10 @@ export class SelectComponent extends FormMethods implements OnInit {
 
   ngOnInit() {
     this.key = this.aspect.options.foreign_key || this.aspect.accessor;
-    if (this.aspect.options.required) { this.validations.push(Validators.required); }
+    this.validations = this.isRequiredValidation(this.aspect, this.validations);
     this.group.addControl(this.key, this.fb.control(this.aspect.defaultValue(), this.validations));
-    if (this.model && this.model[this.key]) {
-    this.setValue(this.group, this.key, this.model);
+    if (this.model && this.model[this.aspect.accessor]) {
+      this.group.get(this.key).setValue(this.model[this.aspect.accessor]['id']);
     }
     this.loadOptions();
   }
@@ -38,10 +38,10 @@ export class SelectComponent extends FormMethods implements OnInit {
 
   async loadOptions() {
     const resp = await this.aspect.selectOptions();
-    this.data = resp.data;
+    this.data = resp;
   }
 
-  formDisplay(item: object) {
-    return this.aspect.converter.fromDisplay(this.aspect.options.association_label, item);
+  formDisplay(item: { key: number, value: object }) {
+    return this.aspect.converter.displayFor(item.value);
   }
 }

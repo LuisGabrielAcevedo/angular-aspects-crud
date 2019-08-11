@@ -44,15 +44,15 @@ export class NewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.aspectsSandbox.fetchIsLoading().subscribe(isLoadingAspects => {
-        this.isLoadingAspects = isLoadingAspects
+        this.isLoadingAspects = isLoadingAspects;
       }),
       this.aspectsSandbox.fetchCurrentAspects().subscribe(aspects => {
         if (aspects[this.resource]) {
           this.form_aspects = aspects[this.resource]['formAspects'];
           this.columns = aspects[this.resource]['columns'];
-        } 
+        }
       })
-    )
+    );
   }
 
   async saveAction(model: AxiosquentModel) {

@@ -37,7 +37,7 @@ export function AspectsReducer(state = initialState, action: AspectsActions.Acti
             });
         }
         case AspectsActions.LOAD_ASPECTS_SUCCESS: {
-            const aspects = { ...state.aspects, ...action.payload }
+            const aspects = { ...state.aspects, ...action.payload };
             return Object.assign({}, state, {
                 isLoadingAspects: false,
                 aspects

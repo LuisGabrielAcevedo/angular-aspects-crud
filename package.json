@@ -27,7 +27,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "axios": "^0.19.0",
-    "axiosquent-ts": "^1.0.5",
+    "axiosquent-ts": "^2.0.1",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.15",

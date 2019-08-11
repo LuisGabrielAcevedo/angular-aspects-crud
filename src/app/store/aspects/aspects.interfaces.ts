@@ -7,7 +7,7 @@ export interface AspectsStoreResourceInformation {
     [key: string]: {
         indexAspects?: any;
         formAspects?: any;
-        searchFields?: any; 
+        searchFields?: any;
         columns?: any;
     };
 }

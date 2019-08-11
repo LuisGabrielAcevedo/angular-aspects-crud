@@ -3,12 +3,12 @@ import { ActionReducerMap } from '@ngrx/store';
 import * as fromAspects from './aspects/aspects.reducer';
 
 export interface State {
-    aspects: fromAspects.AspectsState
+    aspects: fromAspects.AspectsState;
 }
 
 export const reducers: ActionReducerMap<State> = {
-    aspects:fromAspects.AspectsReducer
-}
+    aspects: fromAspects.AspectsReducer
+};
 
 export const getAspectsState = (state: State) => state.aspects;
 

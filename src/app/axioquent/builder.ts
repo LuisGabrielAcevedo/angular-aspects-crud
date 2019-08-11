@@ -122,19 +122,24 @@ export class Builder implements QueryMethods {
 
     public setUrl(url: string | string[], action?: string): Builder {
         if (typeof url === 'string') {
-            this.query.addUrl(new UrlSpec(url, action));
+            this.query.setUrl(new UrlSpec(url, action));
         } else if (Array.isArray(url)) {
             let urlFormatted = '';
             for (const u of url) {
                 urlFormatted += !urlFormatted ? u : `/${u}`;
             }
-            this.query.addUrl(new UrlSpec(urlFormatted, action));
+            this.query.setUrl(new UrlSpec(urlFormatted, action));
         }
         return this;
     }
 
     public header(name: string, value: string): Builder {
         this.headers.push(new HeaderSpec(name, value));
+        return this;
+    }
+
+    public noPagination(): Builder {
+        this.query.setNoPagination(true);
         return this;
     }
 

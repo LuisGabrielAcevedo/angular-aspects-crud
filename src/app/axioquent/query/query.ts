@@ -15,7 +15,8 @@ export class Query {
     protected orFilters: FilterSpec[];
     protected options: Option[];
     protected sort: SortSpec[];
-    protected url: UrlSpec[];
+    protected url: UrlSpec | null;
+    protected noPagination: boolean;
 
     constructor(resource: string) {
         this.resource = resource;
@@ -25,7 +26,8 @@ export class Query {
         this.orFilters = [];
         this.options = [];
         this.sort = [];
-        this.url = [];
+        this.url = null;
+        this.noPagination = false;
     }
 
     public addFilter = (filter: FilterSpec): void => {
@@ -52,8 +54,12 @@ export class Query {
         this.options.push(option);
     }
 
-    public addUrl(url: UrlSpec): void {
-        this.url.push(url);
+    public setUrl(url: UrlSpec): void {
+        this.url = url;
+    }
+
+    public setNoPagination(value: boolean): void {
+        this.noPagination = value;
     }
 
     public setPaginationSpec(paginationSpec: PaginationSpec): void {
@@ -116,25 +122,31 @@ export class Query {
     }
 
     protected addPaginationParameters(searchParams: QueryParam[]): void {
-        if (this.pagination.page) {
-            for (const param of this.pagination.getPaginationParameters()) {
-                searchParams.push(new QueryParam(param.name, param.value));
+        if (this.noPagination) {
+            searchParams.push(new QueryParam('no_pagination', true));
+        } else {
+            if (this.pagination.page) {
+                for (const param of this.pagination.getPaginationParameters()) {
+                    searchParams.push(new QueryParam(param.name, param.value));
+                }
             }
         }
     }
 
-    protected resetUrl(): string {
+    protected resetUrl(resource: string): string {
         let url = '';
-        for (const urlSpec of this.url) {
-            url  = urlSpec.getAction() === 'force'
-            ? urlSpec.getUrl()
-            : url + `/${urlSpec.getUrl()}`;
+        if (this.url) {
+            url = this.url.getAction() === 'force'
+                ? this.url.getUrl()
+                : `${resource}/${this.url.getUrl()}`;
+        } else {
+            url = resource;
         }
         return url;
     }
 
     public toString(id?: number): string {
-        let url: string = this.resetUrl() ? this.resetUrl() : this.resource;
+        let url: string = this.resetUrl(this.resource);
 
         if (id) { url += `/${id}`; }
 
@@ -143,8 +155,8 @@ export class Query {
         this.addSortParameters(searchParams);
         this.addIncludeParameters(searchParams);
         this.addOptionsParameters(searchParams);
-        this.addPaginationParameters(searchParams);
         this.addOrFilterParameters(searchParams);
+        this.addPaginationParameters(searchParams);
 
         let paramString = '';
 
